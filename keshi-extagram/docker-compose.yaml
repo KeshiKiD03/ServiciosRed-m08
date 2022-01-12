@@ -1,0 +1,58 @@
+version: '3.3'
+services:
+  s1:
+    build: s1
+    depends_on:
+      - s2
+      - s4
+      - s5
+      - s6
+    ports:
+      - 443:443
+    networks:
+      - app-network
+  s2:
+    build: s2
+    depends_on:
+      - s7
+    networks:
+      - app-network
+    volumes:
+      - ./app/extagram.php:/var/www/html/extagram.php
+  s4:
+    build: s4
+    depends_on:
+      - s7
+    volumes:
+      - ./uploads:/var/www/html/uploads
+      - ./app/upload.php:/var/www/html/upload.php
+    networks:
+      - app-network
+  s5:
+    build: s5
+    volumes:
+      - ./uploads:/var/www/html
+    networks:
+      - app-network
+  s6:
+    build: s6
+    volumes:
+      - ./app/static:/var/www/html
+    networks:
+      - app-network
+  s7:
+    build: s7
+    environment:
+      MYSQL_DATABASE: extagram_db
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: extagram_admin
+      MYSQL_PASSWORD: pass123
+    volumes:
+      - ./dbdata:/var/lib/mysql
+    networks:
+      app-network:
+        aliases:
+          - db.extagram.edt
+networks:
+  app-network:
+    driver: bridge

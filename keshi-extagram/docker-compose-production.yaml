@@ -1,0 +1,75 @@
+version: '3.8'
+services:
+  s1:
+    image: nginx:alpine
+    depends_on:
+      - s2
+      - s4
+      - s5
+      - s6
+      - s7
+    configs:
+      - source: s1_nginx_conf
+        target: /etc/nginx/conf.d/default.conf 
+    secrets:
+      - site.key
+      - site.pem
+    ports:
+      - 443:443
+    networks:
+      - egnet
+  s2:
+    image: gerardfp/extagram_s2
+    networks:
+      - egnet
+  s4:
+    image: gerardfp/extagram_s4
+    depends_on: 
+      - s2
+    volumes:
+      - ./uploads:/var/www/html/uploads
+    networks:
+      - egnet
+  s5:
+    image: nginx:alpine
+    configs:
+      - source: s5_nginx_conf
+        target: /etc/nginx/conf.d/default.conf
+    volumes:
+      - ./uploads:/var/www/html
+    networks:
+      - egnet
+  s6:
+    image: gerardfp/extagram_s6
+    configs:
+      - source: s6_nginx_conf
+        target: /etc/nginx/conf.d/default.conf
+    networks:
+      - egnet
+  s7:
+    image: gerardfp/extagram_s7
+    environment:
+      MYSQL_DATABASE: extagram_db
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: extagram_admin
+      MYSQL_PASSWORD: pass123
+    volumes:
+      - ./dbdata:/var/lib/mysql
+    networks:
+      egnet:
+        aliases:
+          - db.extagram.edt
+networks:
+  egnet:
+configs:
+  s1_nginx_conf:
+    file: ./s1/conf
+  s5_nginx_conf:
+    file: ./s5/conf
+  s6_nginx_conf:
+    file: ./s6/conf
+secrets:
+  site.key:
+    file: ./site.key
+  site.pem:
+    file: ./site.pem
