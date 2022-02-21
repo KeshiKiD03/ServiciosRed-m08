@@ -1,0 +1,32 @@
+27.10.21 [dhcp]
+
+ssh -i id_rsaAaronM08 root@192.168.100.141
+
+apt-get i -y nstall isc-dhcp-server
+
+Configurar /etc/default/isc-dhcp-server
+
+INTERFACESv4="enp7s0"
+
+
+ip a enp7s0 (isolated)
+
+Configurar /etc/dhcp/dhcpd.conf
+
+Quitar authoritative; # PRINCIPAL
+
+subnet 192.168.10.0 netmask 255.255.255.0 {
+        option routers 192.168.10.1;
+        option subnet-mask 255.255.255.0;
+        range dynamic-bootp 192.168.10.100 192.168.10.200;
+}
+
+Dejar las máquinas como ISOLATED y reiniciar servicios
+
+Configurar /etc/dhcp/dhcpd.conf
+
+option domain-name "informatica.edt"
+
+dhclient en el cliente
+
+

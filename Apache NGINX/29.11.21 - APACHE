@@ -1,0 +1,43 @@
+29.11.21 - APACHE NGINX
+
+nc 192.168.122.169 80
+GET /index.html HTTP
+
+location /a/
+
+printf 'GET /a/index.html HTTP/1.0\r\n' | nc 192.168.122.169 80
+
+server {
+        root /var/www/html;
+
+        location /a/ {
+                root /tmp/;
+        }
+}
+
+mkdir /tmp/a/
+printf 'yessss' > /tmp/a/index.html
+mkdir /tmp/b/
+prinf 'yessss' > /tmp/b/index.html
+cd /var/www/html/
+ls
+rm index.nginx-debian.html
+ls
+
+journalctl -u nginx.service -f & --> Journal
+
+. --> Cualquier caracter
+
+$ --> Termina
+
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj '/CN=mysite.com' -keyout /etc/ssl/private/site.key -out /etc/ssl/certs/site.pem
+
+about:preferences#privacy
+
+Certificate Manager
+
+apt-get install tcpdump
+
+tcpdump -i virbr0 -w http.pcap --> Para escuchar la interfaz
+
+con Wireshark --

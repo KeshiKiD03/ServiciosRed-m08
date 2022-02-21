@@ -1,0 +1,14 @@
+Conversión VirtualBOX qCOW2 a VDI
+
+WINDOWS
+------
+
+https://joko.miraheze.org/wiki/Conversi%C3%B3n_virtualbox
+
+
+DEBIAN
+------
+
+qemu-img convert -O qcow2 debian11-Cliente.vdi debian11-prueba.qcow2
+
+qemu-img convert -O vdi *.qcow2 *.vdi

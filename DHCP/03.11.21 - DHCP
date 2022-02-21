@@ -1,0 +1,131 @@
+03.11.21 - DHCP
+
+/etc/default/isc-dchp-server
+
+INTERFACES="enp7.."
+
+journalctl 
+
+---------------------------------
+dhcpd.conf 
+
+subnet 192.168.10.0 netmask 255.255.255.0 {
+
+	pool {
+		range 192.168.10.10 192.168.10.200;
+		deny unknown-clients;
+	}
+
+	pool {
+		range 192.168.10.201 192.168.10.254;
+		allow unknown-clients;
+	}
+
+}
+
+host maq1 {
+	hardware ethernet 52:54:00:a9:e0:f8;
+}
+
+host maq2 {
+	hardware ethernet 52:54:00:70:8f:55;
+}
+
+
+
+
+deny unknown-clients;
+
+allow unknown-clients;
+
+-------------------------------
+
+DIRECTIVA GROUP
+
+---------------
+
+group {
+	option domain-name-servers 192.168.10.8;
+	
+	subnet 192.168.10.0 netmask 255.255.255.128 {
+		pool {
+			range 192.168.10.11 192.168.10.40;
+			allow known-clients;
+		}
+	}
+}
+
+group {
+	option domain-name-servers 192.168.10.9;
+	
+	subnet 192.168.10.128 netmask 255.255.255.128 {
+		pool {
+			range 192.168.10.129 192.168.10.140;
+			deny unknown-clients;
+		}
+	}
+}
+
+-------------
+
+
+subnet 192.168.10.0 netmask 255.255.255.0 {
+	pool {
+		range 192.168.10.10 192.168.10.30;
+		allow known-clients;
+	}
+
+	pool {
+		range 192.168.10.40 192.168.10.50;
+		allow unknown-clients;
+	}
+}
+
+group {
+	option domain-name-servers 192.168.10.9;
+	host maq1 {
+		hardware ethernet 52:54:00:a9:e0:f8;
+	}
+
+	host maq2 {
+		hardware ethernet 52:54:00:70:8f:55;
+	}
+}
+
+# Esta configuración hace los que estén en el GROUP, les dará una ip entre 10 a 30 y los desconocidos a partir del 40.
+
+# Se graba mediante la MAC del usuario
+
+-------------------
+
+
+
+DIRECTIVA CLASS
+
+
+-------------------
+
+
+class "profes" {
+	match if binary-to-ascii (16,8,":",substring(hardware, 0, 4)) = "1:52:54:0";	
+}
+
+subnet 192.168.10.0 netmask 255.255.255.0 {
+	pool {
+		range 192.168.10.40 192.168.10.50;
+		allow members of "profes";
+	}
+}
+
+host maq1 {
+	hardware ethernet 52:54:00:a9:e0:f8;
+}
+host maq2 {
+	hardware ethernet 52:54:00:70:8f:55;
+}
+
+
+
+
+# El primero es ethernet "1:0:60:60";
+

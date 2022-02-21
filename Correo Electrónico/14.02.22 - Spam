@@ -1,0 +1,70 @@
+14.02.22 - Relay Domains / SPAM
+
+Mira quien lo envia. 
+
+Si ese dominio está en RELAY DOMAINS, REENVIA ese DOMINIO.
+
+S1.edt se ha autenticado con usuario y contraseña.
+
+Está dentro de una de las redes eprmitidas.
+
+Si en el from del EMAIL.
+
+EL SPAM ES EL PROBLEMA PRINCIPAL.
+
+-----
+
+
+Para solventar, hay que instalar un módulo anti spam.
+
+apt  install rspamd
+
+
+worker-procy.inc --> Si está instalado en el ordenador. Postfix lo enviará a otro ordenador.
+
+worker-normal.inc --> Si está instalado en otro ordenador. 
+
+worker-controller.inc --> Si tiene spamweb
+
+/etc/rspamd/worker-proxy.inc
+# this worker will be used as postfix milter
+milter = yes;
+
+# note to self - tighten up these permissions
+bind_socket = "/var/run/rspamd/milter.sock mode=0666 owner=nobody";
+
+# the following specifies self-scan mode, for when rspamd is on the same
+# machine as postfix
+timeout = 120s;
+upstream "local" {
+  default = yes;
+  self_scan = yes;
+}
+
+
+/etc/postfix/main.cf
+
+milter_protocol = 6
+# if rspamd is down, don't reject mail
+milter_default_action = accept
+smtpd_milters = unix:/var/run/rspamd/milter.sock
+milter_mail_macros = i {mail_addr} {client_addr} {client_name} {auth_authen}
+
+En este socket donde tiene que enviar los correos.
+
+
+---- 
+
+FORGED_SENDER
+
+FROM: <putin@kremlin.edt>
+
+RBL
+
+vim /etc/rspamd/local.d/rbl.conf
+
+rbls {
+	an_rbl {
+		checks = ["from"];
+	}
+}

@@ -1,0 +1,190 @@
+08.11.21 - DHCP GROUP / CLASS
+
+Classes ASIX
+
+DHCP --> 3 interfaces 10.0.0.1 / 24 || CAMBIAR INTERFACES ALIAS auto enp7s0:0 (ALIAS)
+
+
+SMX - 10.0.0.1 /24
+
+DAM - 10.0.1.1 /24
+
+
+
+DAM - 10.0.2.1 /24
+
+
+
+
+class "profes" {
+	match if binary-to-ascii (16,8,":",substring(hardware, 0, 4)) = "1:52:54:0";	
+}
+
+# SUBSTRING COGE LOS 4 PRIMEROS BYTES
+# BINARY TO ASCII --> LOS CONVIERTE A ASCII, LOS CONVIERTE EN HEXADECIMAL. DE 8 EN 8.
+# Se unen con : a Hexadecimal. Se unen con :
+# 07 --> Lo convierte en 7 solo 1 numero
+# El primer byte, indica el tipo interfaz. El 1 es Ethernet = Dirección de red Ethernet.
+# El primero es Ethernet.
+# Ethernet1 y su MAC. "1:52:54:0";
+# 
+# 1 : F0 : 7 : 31
+#
+#
+
+
+class "asix" {
+        match if binary-to-ascii (16,8,":",substring(hardware, 0, 4)) = "1:aa:aa:aa";   
+}
+
+class "smx" {
+        match if binary-to-ascii (16,8,":",substring(hardware, 0, 4)) = "1:ee:ee:ee";
+}
+
+class "dam" {
+        match if binary-to-ascii (16,8,":",substring(hardware, 0, 4)) = "1:cc:cc:cc";
+}
+
+
+
+Cambiar la MAC
+
+
+
+
+
+
+
+
+class "asix" {
+        match if binary-to-ascii (16,8,":",substring(hardware, 0, 4)) = "1:aa:aa:aa";   
+}
+
+class "smx" {
+        match if binary-to-ascii (16,8,":",substring(hardware, 0, 4)) = "1:bb:bb:bb";
+}
+
+class "dam" {
+        match if binary-to-ascii (16,8,":",substring(hardware, 0, 4)) = "1:cc:cc:cc";
+}
+
+
+subnet 10.0.0.0 netmask 255.255.255.0 {
+        pool {  
+                range 10.0.0.20 10.0.0.30;
+                allow members of "asix";
+        }
+}
+
+subnet 10.0.1.0 netmask 255.255.255.0 {
+        pool {
+                range 10.0.1.20 10.0.1.30;
+                allow members of "smx";
+        }
+}
+
+subnet 10.0.2.0 netmask 255.255.255.0 {
+        pool {
+                range 10.0.2.20 10.0.2.30;
+                allow members of "dam";
+        }
+}
+
+
+-------------------------------------
+
+Cambiar la interface
+
+source-directory /run/network/interfaces.d
+
+auto enp1s0
+iface enp1s0 inet dhcp
+
+auto enp7s0
+iface enp7s0 inet static
+	address 10.0.0.1/24
+
+auto enp7s0:0
+iface enp7s0:0 inet static
+	address 10.0.1.1/24
+
+auto enp7s0:1
+iface enp7s0:1 inet static
+	address 10.0.2.1/24
+
+--------------------------
+
+Ver resultado
+
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: enp1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 52:54:00:f8:55:60 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.100.141/24 brd 192.168.100.255 scope global dynamic enp1s0
+       valid_lft 3555sec preferred_lft 3555sec
+    inet6 fe80::5054:ff:fef8:5560/64 scope link 
+       valid_lft forever preferred_lft forever
+3: enp7s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 52:54:00:60:b8:96 brd ff:ff:ff:ff:ff:ff
+    inet 10.0.0.1/24 brd 10.0.0.255 scope global enp7s0
+       valid_lft forever preferred_lft forever
+    inet 10.0.1.1/24 brd 10.0.1.255 scope global enp7s0:0
+       valid_lft forever preferred_lft forever
+    inet 10.0.2.1/24 brd 10.0.2.255 scope global enp7s0:1
+       valid_lft forever preferred_lft forever
+    inet6 fe80::5054:ff:fe60:b896/64 scope link 
+       valid_lft forever preferred_lft forever
+
+
+---------------------------
+
+Cambiar el /etc/default/isc-dhcp-server
+
+INTERFACESv4="enp7s0 enp7s0:0 enp7s0:1"
+
+
+--------------------------------
+
+Comprobar
+
+root@SERVIDOR:/etc/default# nano isc-dhcp-server 
+root@SERVIDOR:/etc/default# systemctl restart networking.service 
+root@SERVIDOR:/etc/default# systemctl restart isc-dhcp-server.service 
+root@SERVIDOR:/etc/default# systemctl status isc-dhcp-server.service 
+● isc-dhcp-server.service - LSB: DHCP server
+     Loaded: loaded (/etc/init.d/isc-dhcp-server; generated)
+     Active: active (running) since Mon 2021-11-08 10:58:06 UTC; 5s ago
+       Docs: man:systemd-sysv-generator(8)
+    Process: 1481 ExecStart=/etc/init.d/isc-dhcp-server start (code=exited, status=0/SUCCESS)
+      Tasks: 4 (limit: 1132)
+     Memory: 6.4M
+        CPU: 29ms
+     CGroup: /system.slice/isc-dhcp-server.service
+             └─1496 /usr/sbin/dhcpd -4 -q -cf /etc/dhcp/dhcpd.conf enp7s0 enp7s0:0 enp7s0:1
+
+Nov 08 10:58:04 SERVIDOR systemd[1]: Starting LSB: DHCP server...
+Nov 08 10:58:04 SERVIDOR isc-dhcp-server[1481]: Launching IPv4 server only.
+Nov 08 10:58:04 SERVIDOR dhcpd[1496]: lease 192.168.10.40: no subnet.
+Nov 08 10:58:04 SERVIDOR dhcpd[1496]: lease 192.168.10.41: no subnet.
+Nov 08 10:58:04 SERVIDOR dhcpd[1496]: lease 192.168.10.42: no subnet.
+Nov 08 10:58:04 SERVIDOR dhcpd[1496]: Wrote 0 class decls to leases file.
+Nov 08 10:58:04 SERVIDOR dhcpd[1496]: Wrote 0 leases to leases file.
+Nov 08 10:58:04 SERVIDOR dhcpd[1496]: Server starting service.
+Nov 08 10:58:06 SERVIDOR isc-dhcp-server[1481]: Starting ISC DHCPv4 server: dhcpd.
+Nov 08 10:58:06 SERVIDOR systemd[1]: Started LSB: DHCP server.
+root@SERVIDOR:/etc/default# 
+
+
+
+--------------
+
+
+Abrir las máquinas
+
+
+
+
