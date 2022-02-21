@@ -1,0 +1,22 @@
+version: "2"
+services:
+  ldap:
+    image: chriswar/ldap20:latest
+    container_name: ldap.edt.org
+    hostname: ldap.edt.org
+    ports: 
+      - "389:389"
+      - "636:636"
+    networks:
+     - 2hisx
+  ssh:
+    image: chriswar/ssh20:base
+    container_name: ssh.edt.org
+    hostname: ssh.edt.org
+    ports:
+      - "2022:22"
+    networks:
+     - 2hisx
+networks:
+  2hisx:
+

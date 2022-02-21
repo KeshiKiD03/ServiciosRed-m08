@@ -1,0 +1,58 @@
+dn: uid=pau,ou=usuaris,dc=edt,dc=org
+changetype: modify
+add: objectClass
+objectClass: x-Master
+-
+add: x-EstudiatMaster
+x-EstudiatMaster: TRUE
+-
+add: x-Photo
+x-Photo:< file:///opt/docker/fotos-users/pau.png
+-
+add: x-Web
+x-Web: https://twitter.com/paugasol?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor
+-
+add: x-Nota
+x-Nota: 10
+
+dn: uid=pere,ou=usuaris,dc=edt,dc=org
+changetype: modify
+add: objectClass
+objectClass: x-Master
+-
+add: x-EstudiatMaster
+x-EstudiatMaster: FALSE
+-
+add: x-Photo
+x-Photo:< file:///opt/docker/fotos-users/pere.jpg
+
+dn: uid=anna,ou=usuaris,dc=edt,dc=org
+changetype: modify
+add: objectClass
+objectClass: x-Master
+-
+add: x-EstudiatMaster
+x-EstudiatMaster: TRUE
+-
+add: x-NomMaster
+x-NomMaster: Actriz
+-
+add: x-Nota
+x-Nota: 10
+-
+add: x-Photo
+x-Photo:< file:///opt/docker/fotos-users/anna.jpg
+-
+add: x-Documents
+x-Documents:< file:///opt/docker/resguard_anna.pdf
+
+dn: uid=admin,ou=usuaris,dc=edt,dc=org
+changetype: modify
+add: objectClass
+objectClass: x-Master
+-
+add: x-EstudiatMaster
+x-EstudiatMaster: TRUE
+-
+add: x-Photo
+x-Photo:< file:///opt/docker/fotos-users/admin.jpg

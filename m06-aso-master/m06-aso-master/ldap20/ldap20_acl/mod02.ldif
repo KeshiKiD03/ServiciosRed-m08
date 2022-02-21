@@ -1,0 +1,9 @@
+dn: cn=Anna Pou,ou=usuaris,dc=edt,dc=org
+changetype: modify
+add: mail
+mail: new@new
+mail: new1@new
+mail: new3@new
+-
+add: homePhone
+homePhone: 555555555

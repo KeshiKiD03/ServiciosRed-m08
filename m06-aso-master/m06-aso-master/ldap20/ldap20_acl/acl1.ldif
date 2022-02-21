@@ -1,0 +1,5 @@
+dn: olcDatabase={0}config,cn=config
+changetype: modify
+replace: olcAccess
+olcAccess: to *  by * read
+

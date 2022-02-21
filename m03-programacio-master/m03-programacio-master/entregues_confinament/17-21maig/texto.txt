@@ -1,0 +1,5 @@
+¿Y por qué hay que cerrar los ficheros?
+El beneficio de cerrar convenientemente el fichero es, pues, doble: por un lado, te estás asegurando
+de que los cambios efectuados en el fichero se registren definitivamente en el disco duro y, por otro,
+se libera la memoria RAM que ocupa el buffer.
+Recuérdalo: abrir, trabajar... y cerrar siempre

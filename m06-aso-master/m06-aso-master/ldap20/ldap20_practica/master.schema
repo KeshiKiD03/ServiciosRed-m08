@@ -1,0 +1,53 @@
+# Master schema
+# 
+# x-Master-Estudiat
+# x-NomMaster
+# x-Nota
+# x-Web
+# x-Photo
+# x-Documents
+
+# ------------------
+
+attributetype ( 1.1.2.1.1 NAME 'x-EstudiatMaster'
+        DESC 'true/false Master'
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+        SINGLE-VALUE)
+
+attributetype ( 1.1.2.1.2 NAME 'x-NomMaster'
+	DESC 'Nom del Master'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{50}
+	SINGLE-VALUE )
+
+attributetype ( 1.1.2.1.3 NAME 'x-Nota'
+	DESC 'Nota Final del Alumne'
+	EQUALITY integerMatch
+	ORDERING integerOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+	SINGLE-VALUE )
+
+attributetype ( 1.1.2.1.4 NAME 'x-Web'
+        DESC 'Pagina(s) web del Alumne'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+        )
+
+attributetype ( 1.1.2.1.5 NAME 'x-Photo'
+        DESC 'Fotografia del Alumne'
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.28
+        )
+
+attributetype ( 1.1.2.1.6 NAME 'x-Documents'
+        DESC 'Documents del Alumne'
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.5
+        )
+
+objectclass ( 1.1.2.2.1 NAME 'x-Master'
+        DESC 'Informacions dels Masters universitaris dels usuaris'
+        SUP top
+	AUXILIARY
+	MUST x-EstudiatMaster
+	MAY ( x-NomMaster $ x-Web $ x-Documents $ x-Photo $ x-Nota )
+	)
+

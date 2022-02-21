@@ -1,0 +1,45 @@
+# futbolista schema
+# 
+# x-equip
+# x-dorsal
+# x-web
+# x-foto
+# x-lesionat
+#
+# ------------------
+attributetype ( 1.1.2.1.1 NAME 'x-equip'
+	DESC 'nom de equip'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	SINGLE-VALUE )
+
+attributetype ( 1.1.2.1.2 NAME 'x-dorsal'
+	DESC 'dorsal del jugador'
+	EQUALITY integerMatch
+	ORDERING integerOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+	SINGLE-VALUE )
+
+attributetype ( 1.1.2.1.3 NAME 'x-web'
+        DESC 'pagina(s) web del jugador'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+        )
+
+attributetype ( 1.1.2.1.4 NAME 'x-photo'
+        DESC 'fotografia del jugador'
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.28
+        )
+
+attributetype ( 1.1.2.1.5 NAME 'x-lesionat'
+        DESC 'true/false lesionat'
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+        SINGLE-VALUE)
+
+objectclass ( 1.1.2.2.1 NAME 'x-Futbolista'
+        DESC 'Futboleros crazys'
+        SUP inetOrgPerson
+	STRUCTURAL
+	MUST x-equip
+	MAY (x-dorsal $ x-web $ x-photo $ x-lesionat)
+	)

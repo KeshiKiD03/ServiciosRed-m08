@@ -1,0 +1,24 @@
+dn: cn=Ramon Ferrer, ou=usuaris,dc=edt,dc=org
+objectClass: x-Futbolista
+cn: Ramon Ferrer
+sn: Ramon
+x-equip: barca
+x-dorsal: 12
+x-web: www.ramon.com
+x-photo:< file:///opt/docker/photo.jpeg
+x-lesionat: FALSE
+homePhone: 1234566787
+mail: ramon@barca.cat
+
+dn: cn=Ferran  Roig, ou=usuaris,dc=edt,dc=org
+objectClass: x-Futbolista
+cn: Ferran Roig
+sn: Ferran
+x-equip: barca
+x-dorsal: 4
+x-web: www.ferran.com
+x-photo:< file:///opt/docker/photo2.jpeg
+x-lesionat: FALSE
+homePhone: 134545
+mail: ferran@barca.cat
+

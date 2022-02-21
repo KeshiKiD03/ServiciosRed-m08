@@ -1,0 +1,17 @@
+dn: dc=m06,dc=cat
+dc: m06
+description: ASIX-M06 Escola del treball de Barcelona
+objectClass: dcObject
+objectClass: organization
+o: mo6.cat
+
+dn: ou=alumnes,dc=m06,dc=cat
+ou: alumnes
+description: Alumnes M06 ASO
+objectclass: organizationalunit
+
+dn: ou=profes,dc=m06,dc=cat
+ou: profes
+description: Profes M06 ASO
+objectclass: organizationalunit
+

@@ -1,0 +1,13 @@
+dn: olcDatabase={1}mdb,cn=config
+changetype: modify
+delete: olcAccess
+-
+add: olcAccess
+OlcAccess: to attrs=userPassword
+  by self write
+  by * auth
+OlcAccess: to * by * read
+
+
+
+

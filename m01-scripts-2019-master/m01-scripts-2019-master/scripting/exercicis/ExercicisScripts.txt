@@ -1,0 +1,58 @@
+Exercicis Scripts 
+@edt ASIX-M01 Curs 2017-2018
+
+-------------------
+Processar arguments
+-------------------
+1) Processar els arguments i mostrar per stdout només els de 4 o més caràcters.
+
+2) Processar els arguments i comptar quantes n’hi ha de 3 o més caràcters.
+
+3) Processar arguments que són matricules: 
+ a) llistar les vàlides, del tipus: 9999-AAA. 
+ b) stdout les que són vàlides, per stderr les no vàlides. Retorna de status el número d’errors (de no vàlides)
+
+----------------
+Processar stdin
+----------------
+
+4) Processar stdin cmostrant per stdout les línies numerades i en majúscules..
+
+5) Processar stdin mostrant per stdout les línies de menys de 50 caràcters.
+
+6) Processar per stdin linies d’entrada tipus “Tom Snyder” i mostrar per stdout la línia en format → T. Snyder.
+
+---------------------------
+Processar files/directoris
+---------------------------
+
+7) Programa: prog -f|-d arg1 arg2 arg3 arg4
+ a) Valida que els quatre arguments rebuts són tots del tipus que indica el flag. És a dir, si es crida amb -f valida que tots quatre són file. Si es crida amb -d valida que tots quatre són directoris.
+    Retorna 0 ok, 1 error nº args, 2 hi ha elements errònis. 
+    Exemple: prog -f carta.txt a.txt /tmp fi.txt → retorna status 2. 
+ b) Ampliar amb el cas: prog -h|--help.
+
+8) Programa: prog file…
+   a)Validar existeix almenys un file. Per a cada file comprimir-lo. Generar per stdout el nom del file comprimit si s’ha comprimit correctament, o un missatge d’error per stderror si no s’ha pogut comprimir. En finalitzar es mostra per stdout quants files ha comprimit. 
+     Retorna status 0 ok, 1 error nº args, 2 si algun error en comprimir.
+   b) Ampliar amb el cas: prog -h|--help.
+
+9) Programa: prog.sh [ -r -m -c cognom  -j  -e edat ]  arg…
+   Escriure el codi que desa en les variables: opcions, cognom, edat i arguments els valors corresponents.
+   No cal validar ni mostrar res!
+   Per exemple si es crida: $ prog.sh -e 18 -r -c puig -j wheel postgres ldap
+   retona:     opcions «-r -j», cognom «puig», edat «18», arguments «wheel postgres ldap»
+
+----------------
+Processar passwd
+----------------
+
+10) Programa: prog.sh 
+    Rep per stdin GIDs i llista per stdout la informació de cada un d’aquests grups, en format: gname: GNAME, gid: GID, users: USERS
+
+11) Idem però rep els GIDs com a arguments de la línia d’ordres.
+
+12) Programa -h uid…
+    Per a cada uid mostra la informació de l’usuari en format:
+    logid(uid) gname home shell
+

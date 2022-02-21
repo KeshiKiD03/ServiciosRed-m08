@@ -1,0 +1,317 @@
+******************************************************************************
+  M01-ISO Sistemes Operatius
+  UF2: Gestió de la informació i recursos de xarxa
+******************************************************************************
+  A04-10-Administració de disc
+  Exercici 28: Exercicis de particions i sistemes de fitxers
+        - particions, 
+  
+******************************************************************************
+------------------------------------------------------------------------------
+Particions, sistemes de fitxers (format), disc virtuals, mount, fstab
+------------------------------------------------------------------------------
+1) Disc virtual + format
+    Crear un disc virtual de 100M de tipus Vfat, nom Disc1.img.
+    Assignar-li etiqueta disc-dos.
+    Muntar/desmuntar a mnt.
+    $ dd if=/dev/zero of=Disc1.img bs=1M count=100
+    $ mkfs.vfat Disc1.msg
+    No es pot fer amb minuscules(fatlabel: warning - lowercase labels might not work properly with DOS or Windows)
+    $ dosfslabel Disc1.img DISC-DOS
+    $ losetup /dev/loop1 Disc1.img
+    $ mount /dev/loop1 /mnt
+    $ umount /mnt
+
+2) Disc virtual + format
+    Crear un disc virtual de 200M de tipus ext3, nom Disc2.img.
+    Assignar-li etiqueta linux-prova.
+    Muntar/desmuntar a mnt.
+    $ dd if=/dev/zero of=Disc2.img bs=1M count=200
+    $ mkfs.ext3 Disc2.img
+    $ e2label Disc2.img linux-prova
+    $ mount -o loop Disc2.img /mnt
+    $ umount /mnt
+
+
+3) Disc virtual + format
+    Crear un disc virtual de 300M de tipus ntfs, nom Disc3.img.
+    Assignar-li etiqueta win-disc.
+    Muntar/desmuntar a mnt.
+    $ dd if=/dev/zero of=Disc3.img bs=1M count=300
+    $ losetup /dev/loop0 Disc3.img
+    $ mkfs -t ntfs /dev/loop0
+    $ ntfslabel /dev/loop0 Virtual1
+    $ mount /dev/loop0 /mnt
+    $ umount /mnt
+
+4) Identificar ordres i paquets
+    Llista totes les ordres que contenen la cadena label
+    $ locate label | grep bin
+    Llista totes les ordres que tenen la cadena ntfs
+    $ locate ntfs | grep bin
+    Identifica el paquet al que pertany la ordre ntfslabel
+    $ rpm -qf $(which ntfslabel)
+
+-- Mount manuals--------------------------------------------------------
+
+5) Mount manual
+    $ lsblk 
+    [chriswar@asus practica]$ lsblk
+    NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+    sda      8:0    0 119,2G  0 disk 
+    ├─sda1   8:1    0   529M  0 part 
+    ├─sda2   8:2    0   100M  0 part 
+    ├─sda3   8:3    0    16M  0 part 
+    └─sda4   8:4    0 118,6G  0 part 
+    sdb      8:16   0 931,5G  0 disk 
+    ├─sdb1   8:17   0 784,3G  0 part 
+    ├─sdb2   8:18   0   4,7G  0 part [SWAP]
+    ├─sdb3   8:19   0   488M  0 part /boot/efi
+    └─sdb4   8:20   0 142,1G  0 part /
+    *Monto la particio de windows on esta els arxius (784G)*
+    Muntar la partició de la tarda a /mnt
+    $ mount /dev/sdb1 /mnt
+    Tornar-la a muntar (en calent) ara només coma a ro.
+    $ mount -o ro,remount /dev/sda1 /mnt
+
+6) Els devices loop
+    Muntar usant losetup el Disc1.img a /tmp/d1
+    $ losetup /dev/loop0 Disc1.img
+    $ mount /dev/loop0 /tmp/d1
+    Muntar directament usant únicament mount el Disc2.img a /tmp/d2
+    $ mount -o loop Disc2.img /tmp/d2
+
+7) Imatges iso
+    Localitza una imatge .iso (a gandhi).
+    *No estic conectat a gandhi, ho localitzo desde el meu ordinador*
+    $ find /home -name *.iso
+    /home/chriswar/Downloads/Fedora-Everything-netinst-x86_64-32_Beta-1.2.iso
+
+    Muntar-la a /tmp/iso. navegar per el seu contingut. Fer-ne un tree.
+    # mount /home/chriswar/Downloads/Fedora-Everything-netinst-x86_64-32_Beta-1.2.iso /tmp
+    # tree 
+    tree
+.
+├── EFI
+│   └── BOOT
+│       ├── BOOT.conf
+│       ├── BOOTIA32.EFI
+│       ├── BOOTX64.EFI
+│       ├── fonts
+│       │   └── unicode.pf2
+│       ├── grub.cfg
+│       ├── grubia32.efi
+│       ├── grubx64.efi
+│       ├── mmia32.efi
+│       └── mmx64.efi
+├── images
+│   ├── efiboot.img
+│   ├── install.img
+│   ├── macboot.img
+│   └── pxeboot
+│       ├── initrd.img
+│       └── vmlinuz
+└── isolinux
+    ├── boot.cat
+    ├── boot.msg
+    ├── grub.conf
+    ├── initrd.img
+    ├── isolinux.bin
+    ├── isolinux.cfg
+    ├── ldlinux.c32
+    ├── libcom32.c32
+    ├── libutil.c32
+    ├── memtest
+    ├── splash.png
+    ├── vesamenu.c32
+    └── vmlinuz
+
+6 directories, 27 files
+
+-- Fstab ---------------------------------------------------------------
+
+8) Label i uuid
+    Definir el muntatge automàtic de Disc1.img a /tmp/d1 per label
+    Definir el muntatge automàtic de Disc2.img a /tmp/d2 per uuid
+    Definir el muntatge automàtic de Disc3.img a /tmp/d3 però que no 
+    es munti automàticament sinó que qualsevol usuari ho pugui fer quan 
+    vulgui.
+    Cpmprovar-ho rebotant el sistema!
+
+9) Imatges iso (per ftp a gandhi en trobareu a pub/images)
+    Definir el muntatge automatitzat d'una imatge iso a /tmp/iso de 
+    manera que qualsevol usuari pugui muntar i qualsevol altre usuari
+    pugui desmuntar.
+    /home/chriswar/Downloads/Disc1.iso /tmp/iso    vfat    user    0 0
+-- Fsck ---------------------------------------------------------------
+
+10) Xequeig de particions
+    fer un xequeig de la partició de la tarda
+    fer un quequeig de cada un dels disc virtuals (Disc1.img, Disc2.img 
+    i Disc3.img).
+    fsck.ntfs /dev/sdb1
+    fsck.vfat Disc1.img
+    fsck.ext3 Disc2.img
+    fsck Disc3.img
+-- Swap ---------------------------------------------------------------
+
+11) Activar/Desactivar, Llistar swap
+    Llistar els swaps actius.
+    swapon -s
+    Desactivar el swap manualment.
+    swapoff /dev/sdb2
+
+12) Swap usant el loop
+    Assignar a Disc2.img el format swap usant el deu device de loop
+    losetup /dev/loop0 Disc2.img
+    mkswap -f /dev/loop0
+    
+    Activar manaulment aquest swap. llistar els swaps.
+    swapon /dev/loop0
+    swapon -s
+    Filename                Type        Size    Used    Priority
+    /dev/sdb2                               partition   4882428 130304  -2
+    /dev/loop0                              partition   204796  0   -3
+
+
+13) Swap usant directament un fitxer qualsevol.
+    Assignar al fitxer Disc3.img el format swap (directament al fitxer)
+    Activar manualment el swap. Llistar els Swap.
+    Desactivar tots els swap.
+    mkswap -f Disc3.img
+    swapon Disc3.img
+    swapon -s
+        Filename                             Type            Size    Used    Priority
+    /dev/sdb2                               partition   4882428 130304  -2
+    /Disc3.img                              file            307196  0       -3
+
+
+14) Activar els swap automàticament
+    Configurar fstab per tal d'utilitzar els tres swaps. 
+    Comprovar-ho arrancant de nou!.
+    Restaura els swaps a la configuració per defecte de l'aula.
+
+-- df, du, lsof --------------------------------------------------------
+
+15) Anàlisi de l'espai dels devices
+    * Llistar l'espai total i el disponible de cada partició muntada, tot
+    mostrant el sistema de fitxers que utilitza. Cal mostrar la info en 
+    unitas K, M o G.
+    $ df -hT
+    * Llistar només els sistemes de fitxers ext3.
+    $ df -hTt ext3
+    * Llistar només els sistemes de fitxers virtuals. Quins són?
+    $ df -hTa
+    * Llistar l'ocupació d'inodes només dels sistemes locals.
+    $ df -ih
+
+16) Llistat de l'ocupació de l'espai de disc.
+    - Llistar (K, M o G) l'ocupació de disc de /boot.
+    $ du -h /boot/
+    - Llistar l'ocupació de disc de /etc resumint a un nivell de 
+    profunditat.
+    $ du -h /etc --max-depth=1
+    - Llistar la ocupació de /etc, /boot i /tmp sumaritzant, però sense
+    incloure en el còmput els fitxers .img.
+    $ du -h --exclude=*.img /boot /etc /tmp --max-depth=1
+
+17) Detectar fitxers oberts
+    Llistar quins fitxers tenim oberts en la partició matí
+    Muntar la partició de la tarda a /mnt. Fer actiu aquest directori
+    i llistar els fitxers oberts d'aquesta partició.
+    $ lsof
+
+-- Altres ordres -------------------------------------------------------
+
+18) Ordre stat
+    Aplica l'ordre stat a un fitxer, a un directori, a un link a cada un
+    dels discs virtuals que hem creat.
+    Aplicala també a /dev/sda6.
+    ==============
+    DIRECTORI
+    ==============
+    $ stat Downloads/
+    Fichero: Downloads/
+    Tamaño: 4096          Bloques: 8          Bloque E/S: 4096   directorio
+    Dispositivo: 814h/2068d Nodo-i: 4209954     Enlaces: 4
+    Acceso: (0755/drwxr-xr-x)  Uid: ( 1000/chriswar)   Gid: (  100/   users)
+        Acceso: 2020-04-23 08:55:13.276038238 +0200
+    Modificación: 2020-04-23 08:54:44.052037584 +0200
+        Cambio: 2020-04-23 08:54:44.052037584 +0200
+    Creación: -
+    ==============
+    FITXER
+    ==============
+    $ stat A04-10-admin_disc.pdf 
+    Fichero: A04-10-admin_disc.pdf
+    Tamaño: 175726        Bloques: 344        Bloque E/S: 4096   fichero regular
+    Dispositivo: 814h/2068d Nodo-i: 4067389     Enlaces: 1
+    Acceso: (0644/-rw-r--r--)  Uid: ( 1000/chriswar)   Gid: (  100/   users)
+         Acceso: 2020-04-23 08:02:44.299967795 +0200
+    Modificación: 2020-04-23 08:02:38.111967657 +0200
+       Cambio: 2020-04-23 08:02:41.487967733 +0200
+    Creación: -
+
+    ==============
+    LINK
+    ==============
+    $ stat /bin
+    Fichero: /bin -> usr/bin
+    Tamaño: 7             Bloques: 0          Bloque E/S: 4096   enlace simbólico
+    Dispositivo: 814h/2068d Nodo-i: 12          Enlaces: 1
+    Acceso: (0777/lrwxrwxrwx)  Uid: (    0/    root)   Gid: (    0/    root)
+          Acceso: 2020-04-22 22:11:54.737033231 +0200
+    Modificación: 2020-02-05 21:07:28.872861329 +0100
+          Cambio: 2020-02-05 21:07:28.872861329 +0100
+    Creación: -
+
+19) Ordres vàries.
+    - Prova les ordres: free, vmstat, top, uptime, hdparam.
+    $ free
+               total        used        free      shared  buff/cache   available
+    Mem:       16358172     1834444    13296588      400968     1227140    13821796
+
+    $ vmstat
+    procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+    r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+    0  0      0 13320048  88396 1114304    0    0    61     9  112  249  2  1 94  3  0
+
+    $ top
+
+    $ uptime
+    11:58:57 up 26 min,  1 user,  load average: 0,31, 0,33, 0,43
+
+    # hdparm /dev/sdb1
+
+    /dev/sdb1:
+     multcount     = 16 (on)
+     IO_support    =  1 (32-bit)
+     readonly      =  0 (off)
+     readahead     = 256 (on)
+     geometry      = 102383/255/63, sectors = 1644793856, start = 2048
+
+    - Llistar la informació que descriu l'estructura del sistema de 
+    fitxers d'una partició (blocs, inodes, features, mount count, etc).
+    # dumpe2fs /dev/sdb1
+
+    - Assignar a /dev/sda6 que cada 80 muntatges o cada 130 dies es faci
+    el xequeig automatitzat. Comprovar aquests canvis.
+    # tune2fs -c 80 /dev/sdb1
+
+20) Enllaços durs i enllaços simbòlics.
+    - Crear un fitxer, un enllaç dur a aquest fitxer i un de simbòlic.
+    $ date > day.txt
+    $ ln day.txt /home/chriswar/Downloads/link
+    $ ln -s day.txt /home/chriswar/Downloads/link_day
+
+    - Llistar els inodes dels tres fitxers. Fer l'ordre stat a tots tres.
+    $ ls -i /home/chriswar/Downloads/link_day; ls -i /home/chriswar/Downloads/link; ls -i /tmp/day.txt
+    $ stat /home/chriswar/Downloads/link_day; stat /home/chriswar/Downloads/link; stat /tmp/day.txt
+
+    - Usar find per localitzar tots els fitxers que corresponen a un 
+    mateix hard link.
+    $ find . -samefile day.txt
+
+    - Usar find per localitzar tots els fitxers que corresponen a un 
+    mateix enllaç simbòlic.
+    $ find . -lname day.txt

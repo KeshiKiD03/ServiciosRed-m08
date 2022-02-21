@@ -1,0 +1,2 @@
+V	310310075747Z		01	unknown	/C=es/ST=es/L=madrid/O=pp/OU=barcenas/CN=tres per cent
+V	310310082342Z		03	unknown	/C=ca/ST=catalunya/O=escola del treball/OU=informatica/CN=ldap.edt.org/emailAddress=admin@edt.org

@@ -1,0 +1,37 @@
+﻿Exercicis d’scripts bàsics
+	
+
+Curs 2018-2019
+@edt ASIX-M01 
+UF2 A02-07 Scripting
+
+
+1. Mostrar l’entrada estàndard numerant línia a línia
+
+
+2. Mostar els arguments rebuts línia a línia, tot numerànt-los.
+
+
+3. Fer un comptador des de zero fins al valor indicat per l’argument rebut.
+
+
+4. Fer un programa que rep com a arguments números de més (un o més) i indica per a cada mes rebut quants dies té el més.
+
+
+5. Mostrar línia a línia l’entrada estàndard, retallant només els primers 50 caràcters.
+
+
+6. Fer un programa que rep com a arguments noms de dies de la setmana i mostra  quants dies eren laborables i quants festius. Si l’argument no és un dia de la setmana genera un error per stderr.
+   Exemple: $ prog dilluns divendres dilluns dimarts kakota dissabte sunday
+
+
+7. Processar línia a línia l’entrada estàndard, si la línia té més de 60 caràcters la mostra, si no no.
+
+
+8. Fer un programa que rep com a argument noms d’usuari, si existeixen en el sistema (en el fitxer /etc/passwd) mostra el nom per stdout. Si no existeix el mostra per stderr.
+
+
+9. Fer un programa que rep per stdin noms d’usuari (un per línia), si existeixen en el sistema (en el fitxer /etc/passwd) mostra el nom per stdout. Si no existeix el mostra per stderr.
+
+
+10. Fer un programa que rep com a argument un número indicatiu del número màxim de línies a mostrar. El programa processa stdin línia a línia i mostra numerades un màxim de num línies.

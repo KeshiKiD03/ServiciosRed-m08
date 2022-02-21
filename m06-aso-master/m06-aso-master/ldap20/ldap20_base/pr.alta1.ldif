@@ -1,0 +1,33 @@
+dn: cn=profe ,ou=usuaris,dc=edt,dc=org
+objectclass: posixAccount
+objectclass: inetOrgPerson
+cn: profe m06
+cn: lo profe
+sn: profe
+homephone: 555-222-2225
+mail: profe@edt.org
+description: Prova Usuari Nou 
+ou: system
+ou: admin
+uid: profe
+uidNumber: 901
+gidNumber: 10
+homeDirectory: /tmp/home/profe
+userPassword: {SSHA}4mS0FycWc5bkpW8/a396SGNDTQUlFSX3
+
+dn: cn=bartomeu,ou=usuaris,dc=edt,dc=org
+objectclass: posixAccount
+objectclass: inetOrgPerson
+cn: bartomeu dimisio
+cn: novita
+sn: bartomeu
+homephone: 555-222-2225
+mail: bartomeu@edt.org
+description: Watch out for this girl
+ou: system
+ou: admin
+uid: bartu
+uidNumber: 902
+gidNumber: 10
+homeDirectory: /tmp/home/bartu
+userPassword: {SSHA}4mS0FycWc5bkpW8/a396SGNDTQUlFSX3

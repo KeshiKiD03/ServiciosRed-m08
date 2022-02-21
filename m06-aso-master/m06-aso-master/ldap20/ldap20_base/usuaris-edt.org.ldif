@@ -1,0 +1,109 @@
+#dn: dc=edt,dc=org
+#dc: edt
+#description: Escola del treball de Barcelona
+#objectClass: dcObject
+#objectClass: organization
+#o: edt.org
+
+dn: ou=usuaris,dc=edt,dc=org
+ou: usuaris
+description: Container per usuaris del sistema linux
+objectclass: organizationalunit
+
+dn: cn=Pau Pou,ou=usuaris,dc=edt,dc=org
+objectclass: posixAccount
+objectclass: inetOrgPerson
+cn: Pau Pou
+cn: Pauet Pou
+sn: Pou
+homephone: 555-222-2220
+mail: pau@edt.org
+description: Watch out for this guy
+ou: Profes
+uid: pau
+uidNumber: 5000
+gidNumber: 100
+homeDirectory: /tmp/home/pau
+userPassword: {SSHA}NDkipesNQqTFDgGJfyraLz/csZAIlk2/
+
+dn: cn=Pere Pou,ou=usuaris,dc=edt,dc=org
+objectclass: posixAccount
+objectclass: inetOrgPerson
+cn: Pere Pou
+sn: Pou
+homephone: 555-222-2221
+mail: pere@edt.org
+description: Watch out for this guy
+ou: Profes
+uid: pere
+uidNumber: 5001
+gidNumber: 100
+homeDirectory: /tmp/home/pere
+userPassword: {SSHA}ghmtRL11YtXoUhIP7z6f7nb8RCNadFe+
+
+dn: cn=Anna Pou,ou=usuaris,dc=edt,dc=org
+objectclass: posixAccount
+objectclass: inetOrgPerson
+cn: Anna Pou
+cn: Anita Pou
+sn: Pou
+homephone: 555-222-2222
+mail: anna@edt.org
+description: Watch out for this girl
+ou: Alumnes
+uid: anna
+uidNumber: 5002
+gidNumber: 600
+homeDirectory: /tmp/home/anna
+userPassword: {SSHA}Bm4B3Bu/fuH6Bby9lgxfFAwLYrK0RbOq
+
+dn: cn=Marta Mas,ou=usuaris,dc=edt,dc=org
+objectclass: posixAccount
+objectclass: inetOrgPerson
+cn: Marta Mas
+sn: Mas
+homephone: 555-222-2223
+mail: marta@edt.org
+description: Watch out for this girl
+ou: Alumnes
+uid: marta
+uidNumber: 5003
+gidNumber: 600
+homeDirectory: /tmp/home/marta
+userPassword: {SSHA}9+1F2f5vcW8z/tmSzYNWdlz5GbDCyoOw
+
+dn: cn=Jordi Mas,ou=usuaris,dc=edt,dc=org
+objectclass: posixAccount
+objectclass: inetOrgPerson
+cn: Jordi Mas
+cn: Giorgios Mas
+sn: Mas
+homephone: 555-222-2224
+mail: jordi@edt.org
+description: Watch out for this girl
+ou: Alumnes
+ou: Profes
+uid: jordi
+uidNumber: 5004
+gidNumber: 100
+homeDirectory: /tmp/home/jordi
+userPassword: {SSHA}T5jrMgpJwZZgu0azkLIVoYhiG08/KGUv
+
+dn: cn=Admin System,ou=usuaris,dc=edt,dc=org
+objectclass: posixAccount
+objectclass: inetOrgPerson
+cn: Administrador Sistema
+cn: System Admin
+sn: System
+homephone: 555-222-2225
+mail: anna@edt.org
+description: Watch out for this girl
+ou: system
+ou: admin
+uid: admin
+uidNumber: 10
+gidNumber: 10
+homeDirectory: /tmp/home/admin
+userPassword: {SSHA}4mS0FycWc5bkpW8/a396SGNDTQUlFSX3
+
+

@@ -1,0 +1,193 @@
+dn: ou=anime,dc=edt,dc=org
+changetype: add
+ou: anime
+description: Container per a Anime
+objectclass: organizationalunit
+
+dn: uid=tanjiro,ou=anime,dc=edt,dc=org
+changetype: add
+objectclass: inetOrgPerson
+objectclass: posixAccount
+objectclass: x-Master
+cn: tanjiro
+sn: kamado
+description: Anime Kimetsu no Yaiba
+uid: tanjiro
+uidNumber: 8001
+gidNumber: 800
+homeDirectory: /tmp/home/tanjiro
+userPassword: {SSHA}N3GTszLJhh3/7if+GKvqdcE1nos90pKS
+x-EstudiatMaster: TRUE
+x-NomMaster: Caçador De Dimonis
+x-Nota: 10
+x-Web: https://kimetsu-no-yaiba.fandom.com/wiki/Tanjiro_Kamado
+x-Photo:< file:///opt/docker/users-masters/kimetsu/tanjiro.jpg
+x-Documents:< file:///opt/docker/users-masters/kimetsu/tanjiro.pdf
+
+dn: uid=nezuko,ou=anime,dc=edt,dc=org
+changetype: add
+objectclass: inetOrgPerson
+objectClass: posixAccount
+objectclass: x-Master
+cn: nezuko
+sn: kamado
+description: Anime Kimetsu no Yaiba
+uid: nezuko
+uidNumber: 8002
+gidNumber: 800
+homeDirectory: /tmp/home/nezuko
+userPassword: {SSHA}YGDQpxCMwP2fe0lysWegmMX/U1rmgk+L
+x-EstudiatMaster: TRUE
+x-NomMaster: Dimoni
+x-Nota: 10
+x-Web: https://kimetsu-no-yaiba.fandom.com/wiki/Nezuko_Kamado
+x-Photo:< file:///opt/docker/users-masters/kimetsu/nezuko.jpg
+x-Documents:< file:///opt/docker/users-masters/kimetsu/nezuko.pdf
+
+dn: uid=zenitsu,ou=anime,dc=edt,dc=org
+changetype: add
+objectclass: inetOrgPerson
+objectclass: posixAccount
+objectclass: x-Master
+cn: zenitsu
+sn: agatsuma
+description: Anime Kimetsu no Yaiba
+uid: zenitsu
+uidNumber: 8003
+gidNumber: 800
+homeDirectory: /tmp/home/zenitsu
+userPassword: {SSHA}0F9r6Uwblgq/L0n9ycUdVaKYcK+g9eWb
+x-EstudiatMaster: TRUE
+x-NomMaster: Caçador De Dimonis
+x-Nota: 10
+x-Web: https://kimetsu-no-yaiba.fandom.com/wiki/Zenitsu_Agatsuma
+x-Photo:< file:///opt/docker/users-masters/kimetsu/zenitsu.jpg
+x-Documents:< file:///opt/docker/users-masters/kimetsu/zenitsu.pdf
+
+dn: uid=inosuke,ou=anime,dc=edt,dc=org
+changetype: add
+objectclass: inetOrgPerson
+objectClass: posixAccount
+objectclass: x-Master
+cn: inosuke
+sn: hashibara
+description: Anime Kimetsu no Yaiba
+uid: zenitsu
+uidNumber: 8004
+gidNumber: 800
+homeDirectory: /tmp/home/inosuke
+userPassword: {SSHA}mm6M5NCaeA+0RZiOrKzI/a69oaUIF4Uy
+x-EstudiatMaster: TRUE
+x-NomMaster: Caçador de dimonis
+x-Nota: 7
+x-Web: https://kimetsu-no-yaiba.fandom.com/wiki/Inosuke_Hashibira
+x-Photo:< file:///opt/docker/users-masters/kimetsu/inosuke.jpg
+x-Documents:< file:///opt/docker/users-masters/kimetsu/inosuke.pdf
+
+dn: uid=zerotwo,ou=anime,dc=edt,dc=org
+changetype: add
+objectclass: inetOrgPerson
+objectClass: posixAccount
+objectclass: x-Master
+cn: Zero two
+sn: Two
+description: Anime Darling in the Franxx
+uid: zerotwo
+uidNumber: 8005
+gidNumber: 801
+homeDirectory: /tmp/home/zerotwo
+userPassword: {SSHA}dwp9l2EhL84YFHx0rR7oPgX44tH+2cAg
+x-EstudiatMaster: TRUE
+x-NomMaster: Pilot
+x-Nota: 10
+x-Web: https://darling-in-the-franxx.fandom.com/wiki/Zero_Two
+x-Photo:< file:///opt/docker/users-masters/darling/zerotwo.jpg
+x-Documents:< file:///opt/docker/users-masters/darling/zero_two.pdf
+
+dn: uid=hiro,ou=anime,dc=edt,dc=org
+changetype: add
+objectclass: inetOrgPerson
+objectClass: posixAccount
+objectclass: x-Master
+cn: Hiro
+sn: Hiro
+description: Anime Darling in the Franxx
+uid: hiro
+uidNumber: 8006
+gidNumber: 801
+homeDirectory: /tmp/home/hiro
+userPassword: {SSHA}qn1HU+2vj7uXiF9aFjxaloTpNk1rsRrg
+x-EstudiatMaster: FALSE
+x-NomMaster: Pilot
+x-Web: https://darling-in-the-franxx.fandom.com/wiki/Hiro
+x-Photo:< file:///opt/docker/users-masters/darling/hiro.jpg
+x-Documents:< file:///opt/docker/users-masters/darling/hiro.pdf
+
+dn: uid=asuna,ou=anime,dc=edt,dc=org
+changetype: add
+objectclass: inetOrgPerson
+objectClass: posixAccount
+objectclass: x-Master
+cn: Asuna Yuuki
+sn: Yuuki
+description: Anime Sword Art Online
+uid: asuna
+uidNumber: 8007
+gidNumber: 802
+homeDirectory: /tmp/home/asuna
+userPassword: {SSHA}Wd3pMxDXrL2s4LkRka0y3GclprKZFCLI
+x-EstudiatMaster: FALSE
+x-NomMaster: Gamer
+x-Web: https://swordartonline.fandom.com/wiki/Yuuki_Asuna
+x-Photo:< file:///opt/docker/users-masters/sao/asuna.jpg
+x-Documents:< file:///opt/docker/users-masters/sao/asuna.pdf
+
+dn: uid=kirito,ou=anime,dc=edt,dc=org
+changetype: add
+objectclass: inetOrgPerson
+objectClass: posixAccount
+objectclass: x-Master
+cn: Kazuto Kirigaya
+sn: Kirigaya
+description: Anime Sword Art Online
+uid: kirito
+uidNumber: 8008
+gidNumber: 802
+homeDirectory: /tmp/home/kirito
+userPassword: {SSHA}rQr/OYkP2t9/rh+ryxdUga9ANlIRBclW
+x-EstudiatMaster: TRUE
+x-NomMaster: Gamer
+x-Nota: 10
+x-Web: https://swordartonline.fandom.com/wiki/Kirigaya_Kazuto
+x-Photo:< file:///opt/docker/users-masters/sao/kirito.jpg
+x-Documents:< file:///opt/docker/users-masters/sao/kirito.pdf
+
+
+dn: cn=Kimetsu no Yaiba,ou=grups,dc=edt,dc=org
+changetype: add
+objectclass: posixGroup
+cn: Kimetsu no Yaiba
+gidNumber: 800
+description: Grup de Caçador de dimonis/dimoni
+memberUid: tanjiro
+memberUid: nezuko
+memberUid: zenitsu
+memberUid: inosuke
+
+dn: cn=Darling in the Franxx,ou=grups,dc=edt,dc=org
+changetype: add
+objectclass: posixGroup
+cn: Darling in the Franxx
+gidNumber: 801
+description: Grup de Pilots
+memberUid: zerotwo
+memberUid: hiro
+
+dn: cn=Sword Art Online,ou=grups,dc=edt,dc=org
+changetype: add
+objectclass: posixGroup
+cn: Sword Art Online
+gidNumber: 802
+description: Grup de Gamers
+memberUid: asuna
+memberUid: kirito

@@ -1,0 +1,370 @@
+Christian Manalo Mañbo - isx9565961
+12/05/2020
+
+-- Laboratorio de pruebas --
+-- Usar qemu-kvm para generar la VM --
+
+1) Instalamos el grupo de virtualizacion qemu
+# dnf -y install @virtualization qemu
+
+2) Activar el servicio
+# systemctl start libvirtd
+
+3) Descargar la imagen fedora 27 tipus cloud
+$ wget [url]
+
+4) Creamos un disco virtual de 10G
+$ qemu-img create -f qcow2 -o preallocation=metadata hisx1.qcow2 10G
+
+
+9) Instalar F27 a la maquina
+nota: La primera vez arranca con el netins despues arrancara con el disco virtual
+$ qemu-kvm -m 2048 -smp 4 -hda hisx.qcow2 -cdrom Fedora27ISO  -boot once=d  2> /dev/null & 
+
+9.1) Configuracion para instalar Fedora27
+
+- A la hora de elegir donde instalarlo, primero tenemos que modificar las particiones.
+Para entrar en modo comando tenemos que ir en view > show tabs  y luego clicar en compat_monitor0
+
+- Dentro de esta pestaña hay que poner el siguiente comando : sendkey ctrl-alt-f2
+
+- Volvemos en VGA y veremos que ya estaremos en la terminal. Para tener el teclado en español
+$ loadkeys es 
+
+- Ahora particionamos con el fdisk /dev/sda
+    - Crear una particion 2 particiones
+    - /dev/sda1 -->  F27 de 3GB
+    - /dev/sda2 --> Lo que queda del disco
+
+- Ahora volver a la sesion grafica, en la pestaña de compat_monitor0 introducimos : sendkey ctrl-alt-f6
+
+- Instalacion minima
+
+- Solo queda actualizar el disco y reformatear el disco de /dev/sda1 a ext4 y ya esta.
+
+10) Snapshot
+$ qemu-img create -f qcow2 -b hisx1.qcow2 hisx1-snapsho.qcow2
+
+-- Extra Arrancar una live --
+$ qemu-img -m 2048 -smp 4 -hda hisx.qcow2 -cdrom LIVE  -boot order=d  2> /dev/null & 
+
+
+
+
+
+-- 1 Multiples menus -- 
+
+
+1) Utilizamos la Snapshot
+$ qemu-kvm -m 2048 -smp 4 -hda hisx1-snapshot1.qcow2 2> /dev/null &
+
+2) Editamos el grub.cfg para tener solo lo necesario
+IMPORTANTE -->  Hacer un backup del grub antes de modificalo
+# cd /boot/grub2
+# cp grub.cfg grub.cfg.bk 
+
+
+3) Modificar las entradas
+set default=0
+set timeout=-1
+
+menuentry 'F27 per defecte' --class fedora --class gnu-linux --class gnu --class os --unrestricted $menuentry_id_option 'gnulinux-4.18.19-100.fc27.x86_64-advanced-33c60c09-6aa4-4337-ad50-cea84e938d77' {
+        insmod gzio
+        insmod part_msdos
+        insmod ext2
+        set root='hd0,msdos3'
+        linux16 /boot/vmlinuz-4.18.19-100.fc27.x86_64 root=/dev/sda3 ro rhgb quiet LANG=es_ES.UTF-8
+        initrd16 /boot/initramfs-4.18.19-100.fc27.x86_64.img
+}
+menuentry 'F27 Despullat' --class fedora --class gnu-linux --class gnu --class os --unrestricted {
+        insmod gzio
+        insmod part_msdos
+        insmod ext2
+        set root='hd0,msdos3'
+        linux16 /boot/vmlinuz-4.18.19-100.fc27.x86_64 root=/dev/sda3 ro rhgb quiet LANG=es_ES.UTF-8 init=/bin/bash
+        initrd16 /boot/initramfs-4.18.19-100.fc27.x86_64.img
+}
+menuentry 'F27 Rescat' --class fedora --class gnu-linux --class gnu --class os --unrestricted {
+        insmod gzio
+        insmod part_msdos
+        insmod ext2
+        set root='hd0,msdos3'
+        linux16 /boot/vmlinuz-4.18.19-100.fc27.x86_64 root=/dev/sda3 ro rhgb quiet LANG=es_ES.UTF-8 systemd.init=rescue.target
+        initrd16 /boot/initramfs-4.18.19-100.fc27.x86_64.img
+}
+
+menuentry 'F27 Emergency' --class fedora --class gnu-linux --class gnu --class os --unrestricted {
+        insmod gzio
+        insmod part_msdos
+        insmod ext2
+        set root='hd0,msdos3'
+        linux16 /boot/vmlinuz-4.18.19-100.fc27.x86_64 root=/dev/sda3 ro rhgb quiet LANG=es_ES.UTF-8 systemd.init=emergency.target
+        initrd16 /boot/initramfs-4.18.19-100.fc27.x86_64.img
+}
+
+menuentry 'Fedora rescue per defecte' --class fedora --class gnu-linux --class gnu --class os --unrestricted $menuentry_id_option 'gnulinux-0-rescue-e2eb3ce580654e4cae878f7ea57ab436-advanced-33c60c09-6aa4-4337-ad50-cea84e938d77' {
+        insmod gzio
+        insmod part_msdos
+        insmod ext2
+        set root='hd0,msdos3'
+        linux16 /boot/vmlinuz-0-rescue-e2eb3ce580654e4cae878f7ea57ab436 root=/dev/sda3 ro rhgb quiet
+        initrd16 /boot/initramfs-0-rescue-e2eb3ce580654e4cae878f7ea57ab436.img
+}
+-- 2 Submenus --
+
+1) Solo hay que añadir submenu en el grub
+set default=0
+set timeout=-1
+
+menuentry 'F27 per defecte' --class fedora --class gnu-linux --class gnu --class os --unrestricted $menuentry_id_option 'gnulinux-4.18.19-100.fc27.x86_64-advanced-33c60c09-6aa4-4337-ad50-cea84e938d77' {
+        insmod gzio
+        insmod part_msdos
+        insmod ext2
+        set root='hd0,msdos3'
+        linux16 /boot/vmlinuz-4.18.19-100.fc27.x86_64 root=/dev/sda3 ro rhgb quiet LANG=es_ES.UTF-8
+        initrd16 /boot/initramfs-4.18.19-100.fc27.x86_64.img
+}
+submenu 'F27 Alternativas'{ 
+menuentry 'F27 Despullat' --class fedora --class gnu-linux --class gnu --class os --unrestricted {
+        insmod gzio
+        insmod part_msdos
+        insmod ext2
+        set root='hd0,msdos3'
+        linux16 /boot/vmlinuz-4.18.19-100.fc27.x86_64 root=/dev/sda3 ro rhgb quiet LANG=es_ES.UTF-8 init=/bin/bash
+        initrd16 /boot/initramfs-4.18.19-100.fc27.x86_64.img
+}
+menuentry 'F27 Rescat' --class fedora --class gnu-linux --class gnu --class os --unrestricted {
+        insmod gzio
+        insmod part_msdos
+        insmod ext2
+        set root='hd0,msdos3'
+        linux16 /boot/vmlinuz-4.18.19-100.fc27.x86_64 root=/dev/sda3 ro rhgb quiet LANG=es_ES.UTF-8 systemd.init=rescue.target
+        initrd16 /boot/initramfs-4.18.19-100.fc27.x86_64.img
+}
+
+menuentry 'F27 Emergency' --class fedora --class gnu-linux --class gnu --class os --unrestricted {
+        insmod gzio
+        insmod part_msdos
+        insmod ext2
+        set root='hd0,msdos3'
+        linux16 /boot/vmlinuz-4.18.19-100.fc27.x86_64 root=/dev/sda3 ro rhgb quiet LANG=es_ES.UTF-8 systemd.init=emergency.target
+        initrd16 /boot/initramfs-4.18.19-100.fc27.x86_64.img
+}}
+
+menuentry 'Fedora rescue per defecte' --class fedora --class gnu-linux --class gnu --class os --unrestricted $menuentry_id_option 'gnulinux-0-rescue-e2eb3ce580654e4cae878f7ea57ab436-advanced-33c60c09-6aa4-4337-ad50-cea84e938d77' {
+        insmod gzio
+        insmod part_msdos
+        insmod ext2
+        set root='hd0,msdos3'
+        linux16 /boot/vmlinuz-0-rescue-e2eb3ce580654e4cae878f7ea57ab436 root=/dev/sda3 ro rhgb quiet
+        initrd16 /boot/initramfs-0-rescue-e2eb3ce580654e4cae878f7ea57ab436.img
+}
+
+-- 3 Mode editar entrada: bàsic --
+1) Modo rescue con numeros
+Pulsamos la letra e la entrada por defecto
+Entramos en modo rescate, buscamos la linia linux16, añadimos al final un 1. Arrancamos con CTRL+X automaticamente entraremos en modo rescarte.
+
+2) Modo rescue con systemd.unit
+Lo mismo que el anterior en vez de poner un 1, ponemos systemd.unit=rescue.target 
+
+3) Entrada despullada, añadir init=/bin/bash
+        insmod gzio
+        insmod part_msdos
+        insmod ext2
+        set root='hd0,msdos3'
+        linux16 /boot/vmlinuz-4.18.19-100.fc27.x86_64 root=/dev/sda3 ro rhgb quiet LANG=es_ES.UTF-8 init=/bin/bash
+        initrd16 /boot/initramfs-4.18.19-100.fc27.x86_64.img
+
+
+
+
+
+-- 4 Generar menús automaticamente: grub2-mkconfig --
+1) Mostrar por stdout necesita ser root
+# grub2-mkconfig
+
+2) Lo mismo pero guardando a un fichero
+# grub2-mkconfig > grub.conf.out
+
+3) Guardar una copia del grub actual
+# cp grub.cfg grub.unso.conf 
+
+
+
+
+
+-- 5 Mode Comanda: configfile/llistar --
+1) Cuando estemos en el menu del grub pulsamos la tecla c 
+
+2) Listamos las particiones
+grub > ls 
+
+3) Con el comando configfile indicamos la ruta del fichero que queremos cargar
+grub > configfile (hd0,msdos1)/boot/grub2/grub.cfg 
+
+4) Reboot
+
+5) Utilizamos otro grub 
+grub > configfile (hd0,msdos1)/boot/grub2/grub.unso.conf 
+
+
+
+
+-- 6 Instal·lar un nou sistema: ara qui mana? --
+1) Arrancar la maquina virtual con cdrom 
+$ qemu-kvm -m 2048 -smp 4 -hda hisx1-snapshot.qcow2 -cdrom ../Fedora-Workstation-netinst-x86_64-30-1.2.iso -boot once=d 2> /dev/null &
+
+2) configurar particiones 
+- A la hora de elegir donde instalarlo, primero tenemos que modificar las particiones.
+Para entrar en modo comando tenemos que ir en view > show tabs  y luego clicar en compat_monitor0
+
+- Dentro de esta pestaña hay que poner el siguiente comando : sendkey ctrl-alt-f2
+
+- Volvemos en VGA y veremos que ya estaremos en la terminal. Para tener el teclado en español
+$ loadkeys es 
+
+- Ahora particionamos con el fdisk /dev/sda
+    - Crear una particion 2 particiones
+    - /dev/sda1 -->  F27 de 3GB
+    - /dev/sda2 --> Swap 1G 
+    - /dev/sda3 --> F30 3G 
+
+- Ahora volver a la sesion grafica, en la pestaña de compat_monitor0 introducimos : sendkey ctrl-alt-f6
+
+- Instalacion minima
+
+- Solo queda actualizar el disco y reformatear el disco de /dev/sda3 a ext4 y /dev/sda2 a swap y ya esta.
+
+
+
+
+
+-- 7. Establir qui mana (1): local --
+1) Entrar a modo comando grub 
+Cargar el kernel y initramfs
+grub> linux16 (hd0,msdos1)/boot/vmlinuz-... root=dev/sda2 ro 
+grub> initrd16 (hd0,msdos1)/boot/initramfs-...
+grub> boot 
+
+2) Instalar el grub a la particion de sda1 
+# grub2-install /dev/sda
+
+
+
+
+-- 8. Iniciar un sistema operatiu no llistat (1): editar una entrada -- 
+
+1) Apuntar la version del kernel y del initramfs.
+grub> set root=(hd0,msdos3)
+grub> ls /boot
+
+2) Editar la entrada de F27 despullat
+Editar la directiva root, version del kernel ,opcion root= del kernel y la version de initramfs
+        insmod gzio
+        insmod part_msdos
+        insmod ext2
+        set root='hd0,msdos3'
+        linux16 /boot/vmlinuz-5.6.11-100.fc30.x86_64 root=/dev/sda3 ro rhgb quiet LANG=es_ES.UTF-8 
+        initrd16 /boot/initramfs-5.6.11-100.fc30.x86_64.img
+
+
+
+
+-- 9. Iniciar un sistema operatiu no llistat (2): usar configfile --
+1) Anar a la terminal del grub 
+grub > configfile (hd0,msdos3)/boot/grub2/grub.cfg
+
+
+
+
+
+
+-- 10. Establir qui mana (2): un altre device --
+
+1) Muntar la particio a mnt i fer un grub install.
+# grub2-install --boot-directory=/mnt /dev/sda
+
+
+
+-- 11. Password (1): establir un password a una partició -- 
+
+1) Especificar el superusers
+grub > set superusers='root'
+grub > password root jupiter
+
+
+2) Esborra "--unrestricted" si està posat.
+Especificar un usuari
+grub > password chris chris
+
+
+-- 12. Password (1): establir un password a una partició --
+1) Assignar el superuser i la contrasenya
+
+2) Treure el "--unrestricted" de tots els menús 
+
+
+
+
+
+Grub (2) Recuperació:
+
+-- 13. Eliminació accidental de grub.conf (1): usar backup --
+
+1) Forma manual 
+grub > insmod gzio
+grub > insmos part_msdos
+grub > insmod ext2 
+
+grub > linux16 (hd0,msdos3)/boot/vmlinuz... root=/dev/sda3 ro
+grub > initrd16 (hd0,msdos3)/boo/initram...
+
+grub > boot
+
+
+2) Podem fer amb configfile
+
+grub >  configfile (hd0,msdos3)/boo/grub2/grub.conf.bk
+
+
+
+
+
+
+-- 14. Eliminació accidental de grub.conf: usar un altre --
+sistema
+
+1) Hi ha dues maneres, amb insmods i amb normal: 
+- insmod -
+grub > insmod (hd0,msdos1)/boot/grub2/i386-pc/gzio.mod
+grub > insmod (hd0,msdos1)/boot/grub2/i386-pc/part_msdos.mod
+grub > insmod (hd0,msdos1)/boot/grub2/i386-pc/ext2.mod
+
+grub > linux16 (hd0,msdos1)/boot/vmlinuz... root=/dev/sda1 ro
+grub > initrd16 (hd0,msdos1)/boot/initramfs...
+
+grub > boot
+
+- normal -
+grub > set root=(hd0,msdos1)
+grub > set prefix=(hd0,msdos1)/boot/grub2
+grub > insmod normal
+grub > normal
+
+
+2) Quan conseguim entrar fem la seguent comanda:
+
+# grub2-install /dev/sda
+
+
+
+
+
+-- 16. Eliminació accidental de la partició de grub --
+
+1) Muntem
+# mount /dev/sda1 /mnt
+
+2) Instalem de nou el grub
+# grub2-install --boot-directory=/mnt/boot /dev/sda

@@ -1,0 +1,8 @@
+TITLE,OpenVPN 2.4.10 x86_64-redhat-linux-gnu [SSL (OpenSSL)] [LZO] [LZ4] [EPOLL] [PKCS11] [MH/PKTINFO] [AEAD] built on Dec  9 2020
+TIME,Sun Mar 21 13:01:19 2021,1616331679
+HEADER,CLIENT_LIST,Common Name,Real Address,Virtual Address,Virtual IPv6 Address,Bytes Received,Bytes Sent,Connected Since,Connected Since (time_t),Username,Client ID,Peer ID
+CLIENT_LIST,asus-laptop,79.153.127.130:58223,10.8.0.6,,9041,4665,Sun Mar 21 12:58:34 2021,1616331514,UNDEF,0,0
+HEADER,ROUTING_TABLE,Virtual Address,Common Name,Real Address,Last Ref,Last Ref (time_t)
+ROUTING_TABLE,10.8.0.6,asus-laptop,79.153.127.130:58223,Sun Mar 21 13:00:58 2021,1616331658
+GLOBAL_STATS,Max bcast/mcast queue length,1
+END

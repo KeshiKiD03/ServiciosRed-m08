@@ -1,0 +1,5 @@
+#%PAM-1.0
+auth       sufficient   pam_python.so /opt/docker/pam_mates.py
+auth       required     pam_deny.so
+account    sufficient   pam_python.so /opt/docker/pam_mates.py
+

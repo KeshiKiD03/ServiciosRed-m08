@@ -1,0 +1,41 @@
+dn: cn=Anna Pou,ou=usuaris,dc=edt,dc=org
+changetype: add
+objectclass: posixAccount
+objectclass: inetOrgPerson
+cn: Anna Pou
+cn: Anita Pou
+sn: Pou
+homephone: 555-222-2222
+mail: anna@edt.org
+description: Watch out for this girl
+ou: Alumnes
+uid: anna
+uidNumber: 5002
+gidNumber: 600
+homeDirectory: /tmp/home/anna
+userPassword: {SSHA}Bm4B3Bu/fuH6Bby9lgxfFAwLYrK0RbOq
+
+dn: ou=virus,dc=edt,dc=org
+changetype: add
+ou: virus
+description: Container pel virus del sistema linux
+objectclass: organizationalunit
+
+dn: cn=koman noturrons,ou=usuaris,dc=edt,dc=org
+changetype: add
+objectclass: posixAccount
+objectclass: inetOrgPerson
+cn: koman noturrons
+cn: tintin
+sn: koeman
+uid: koeman
+uidNumber: 9002
+gidNumber: 600
+homeDirectory: /tmp/home/koeman
+userPassword: {SSHA}5EOMYMg/6SxHfNDiDfNzNNkA6PnI+5oR
+
+dn: cn=Pau Pou,ou=usuaris,dc=edt,dc=org
+changetype: modrdn
+newrdn: cn=Pau Maria Pou
+deleteoldrdn: 0
+#newsuperior: ou=virus,dc=edt,dc=org

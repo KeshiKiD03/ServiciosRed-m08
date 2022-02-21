@@ -1,0 +1,9 @@
+dn: cn=Pau Pou,ou=usuaris,dc=edt,dc=org
+changetype: modify
+delete: homePhone
+-
+add: homePhone
+homePhone: 777777777
+-
+replace: mail
+mail: newnew@new

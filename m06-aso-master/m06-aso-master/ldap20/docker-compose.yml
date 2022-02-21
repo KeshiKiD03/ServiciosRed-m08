@@ -1,0 +1,28 @@
+version: "2"
+services:
+  ldap:
+    image: edtasixm06/ldap20:latest
+    container_name: ldap.edt.org
+    hostname: ldap.edt.org
+    ports: 
+      - "389:389"
+      - "636:636"
+    volumes:
+      - "ldap-data:/var/lib/ldap"
+      - "ldap-config:/etc/openldap/slapd.d"        
+    networks:
+     - 2hisix
+  ssh:
+    image: edtasixm06/phpldapadmin:20
+    container_name: phpldapadmin.edt.org
+    hostname: phpldapadmin.edt.org
+    ports:
+     - "80:80"
+    networks:
+     - 2hisix
+networks:
+  2hisix:
+volumes:
+  ldap-data:
+  ldap-config:
+

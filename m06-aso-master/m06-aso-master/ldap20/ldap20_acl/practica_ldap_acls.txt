@@ -1,0 +1,69 @@
+1. add: olcAccess
+olcAccess: to * by dn.exact="cn=Anna Pou,ou=usuaris,dc=edt,dc=org" write by * read
+
+
+2.add: olcAccess
+olcAccess: to attrs=mail,homePhone 
+  by dn.exact="cn=Anna Pou,ou=usuaris,dc=edt,dc=org" write 
+  by self write 
+  by * read
+olcAccess: to * 
+  by dn.exact="cn=Anna Pou,ou=usuaris,dc=edt,dc=org" write 
+  by * read
+
+3. add: olcAccess
+olcAccess: to attrs=mail 
+  by self write 
+  by * read
+olcAccess: to * 
+  by * read
+
+4. add: olcAccess
+olcAccess: to attrs=mail 
+  by self read
+olcAccess: to * 
+  by * read
+
+
+5. olcAccess: to attrs=userPassword
+  by self write
+  by * read
+        
+olcAccess: to * by * read
+
+6. OlcAccess: to attrs=userPassword
+  by self write
+  by * auth
+        
+OlcAccess: to * by * read
+
+7. olcAccess: to attrs=userPassword
+  by self write
+  by * auth
+
+olcAccess: to *
+   by self read
+   by * search
+
+8. olcAccess: to attrs=userPassword
+  by dn.exact="cn=Pere Pou,ou=usuaris,dc=edt,dc=org" write
+  by self write
+  by * auth
+
+olcAccess: to attrs=mail,homePhone
+  by dn.exact="cn=Anna Pou,ou=usuaris,dc=edt,dc=org" write
+  by self write
+  
+
+olAccess: to *
+  by dn.exact="cn=Anna Pou,ou=usuaris,dc=edt,dc=org" write
+  by self read
+  by * search
+
+
+
+
+
+
+
+

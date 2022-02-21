@@ -1,0 +1,13 @@
+dn: olcDatabase={1}mdb,cn=config
+changetype: modify
+delete: olcAccess
+-
+add: olcAccess
+olcAccess: to attrs=mail 
+  by self write 
+  by * read
+olcAccess: to * 
+  by * read
+
+
+

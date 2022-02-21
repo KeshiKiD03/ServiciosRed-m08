@@ -1,0 +1,50 @@
+#dn: dc=m06,dc=cat
+#dc: m06
+#description: ASIX-M06 Escola del treball de Barcelona
+#objectClass: dcObject
+#objectClass: organization
+#o: mo6.cat
+
+
+dn: cn=Christian Manalo,ou=alumnes,dc=m06,dc=cat
+objectclass: posixAccount
+objectclass: inetOrgPerson
+cn: Christian 
+sn: Manalo
+homephone: 555-222-2220
+mail: cmanalo@m06.cat
+uid: cmanalo
+uidNumber: 1515
+gidNumber: 100
+homeDirectory: /tmp/home/chris
+userPassword: {SSHA}Wsl7xvfRDnR94YRavCQlbRfRjeoaGDan
+
+dn: cn=Mark Santiago,ou=alumnes,dc=m06,dc=cat
+objectclass: posixAccount
+objectclass: inetOrgPerson
+cn: Mark
+sn: Santiago
+homephone: 522-222-2220
+mail: msantiago@m06.cat
+uid: msantiag0
+uidNumber: 1010
+gidNumber: 100
+homeDirectory: /tmp/home/mark
+userPassword: {SSHA}Wsl7xvfRDnR94YRavCQlbRfRjeoaGDan
+
+
+dn: cn=Eduard Canet,ou=profes,dc=m06,dc=cat
+objectclass: posixAccount
+objectclass: inetOrgPerson
+cn: Eduard
+sn: Canet
+homephone: 555-000-2220
+mail: ecanet@m06.cat
+uid: ecanet
+uidNumber: 9999
+gidNumber: 100
+homeDirectory: /tmp/home/ecanet
+userPassword: {SSHA}Wsl7xvfRDnR94YRavCQlbRfRjeoaGDan
+
+
+
