@@ -282,39 +282,62 @@ sed -i 's/${PEERTUBE_HOST}/127.0.0.1:9000/g' /etc/nginx/sites-available/peertube
 sudo vim /etc/nginx/sites-available/peertube
 ```
 
+```
+root@peertube:/etc/nginx/sites-available# cat peertube 
+#server {
+#  listen 80;
+#  listen [::]:80;
+#  server_name peertube.edt;#
+
+#  location /.well-known/acme-challenge/ {
+#    default_type "text/plain";
+#    root /var/www/certbot;
+#  }
+#  location / { return 301 https://$host$request_uri; }
+#}
+
+server {
+  listen 80;
+  #listen 443 ssl http2;
+  #listen [::]:443 ssl http2;
+  server_name peertube.edt;
+
+  access_log /var/log/nginx/peertube.access.log; # reduce I/0 with buffer=10m flush=5m
+  error_log  /var/log/nginx/peertube.error.log;
+
+  ##
+  # Certificates
+  # you need a certificate to run in production. see https://letsencrypt.org/
+  ##
+ # ssl_certificate     /etc/letsencrypt/live/peertube.edt/fullchain.pem;
+ # ssl_certificate_key /etc/letsencrypt/live/peertube.edt/privkey.pem;
+}
+```
+
 
 ```
 ln -s /etc/nginx/sites-available/peertube /etc/nginx/sites-enabled/peertube
 ```
 
-## ¡¡MIRARLO DESDE AQUI¡!
-
-* To generate the certificate for your domain as required to make https work you can use Let's Encrypt:
-
-```
-$ sudo systemctl stop nginx
-$ sudo certbot certonly --standalone --post-hook "systemctl restart nginx"
-$ sudo systemctl reload nginx
-```
-
-
-```
-
-```
 
 
 
 
 
 ```
-
+systemctl restart nginx
 ```
 
 
 ```
-
+systemctl reload nginx
 ```
 
+## TCP TUNNING
+```
+$ sudo cp /var/www/peertube/peertube-latest/support/sysctl.d/30-peertube-tcp.conf /etc/sysctl.d/
+$ sudo sysctl -p /etc/sysctl.d/30-peertube-tcp.conf
+```
 
 3. 
 
