@@ -108,33 +108,28 @@ https://docs.ansible.com/ansible/latest/collections/ansible/builtin/index.html -
 
 ```
 ---
-- hosts: all
-  gather_facts: yes
-  become: yes
-  vars:
-    NODEJS_VERSION: "14"
-    ansible_distribution_release: "xenial" #trusty
+- name: Install nodejs
+  hosts: all
+  become: true
   tasks:
-    - name: Install packages
-    apt:
-      name: {{ item }}
-      state: present
-    loop:
-      - curl
-      - sudo
-      - unzip
-      - vim    
-    - name: Install the gpg key for nodejs LTS
-      apt_key:
-        url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+    - name: install nodejs prerequisites
+      apt:
+        name:
+          - apt-transport-https
+          - gcc
+          - g++
+          - make
         state: present
-    - name: Install the nodejs LTS repos
+    - name: add nodejs apt key
+      apt_key:
+        url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+        state: present
+    - name: add nodejs repository
       apt_repository:
-        repo: "deb https://deb.nodesource.com/setup_14.x 2.10.8 main"
+        repo: deb https://deb.nodesource.com/node_12.x 2.10.8 main
         state: present
         update_cache: yes
-
-    - name: Install the nodejs
+    - name: install nodejs
       apt:
         name: nodejs
         state: present
