@@ -1,0 +1,12 @@
+---
+- hosts: all
+  tasks:
+  - name: Install packages
+    apt:
+      name: {{ item }}
+      state: present
+    loop:
+      - nginx
+      - vim
+      - git
+when: ansible_facts['os_family'] == "Debian"
