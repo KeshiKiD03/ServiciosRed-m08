@@ -12,7 +12,34 @@
 
 6. Poner en marcha del DNS.
 
-- sudo sh -c "echo 'nameserver 192.168.1.169'" > /etc/resolv.conf
+IP: peertubeAnsible: 192.168.100.141
+
+IP: peertubeDNS: 192.168.100.169
+
+db.edt
+
+```
+@       SOA ns root 1 4 4 4 4
+        NS ns
+ns      A       192.168.100.169
+edt     A       192.168.100.169
+peertube  A     192.168.100.141
+
+```
+
+
+default-zones
+
+```
+zone "edt" {
+    type master;
+    file "/etc/bind/db.edt";
+};
+```
+
+service bind9 restart
+
+- sudo sh -c "echo 'nameserver 192.168.100.169'" > /etc/resolv.conf
 
 - O host local
 

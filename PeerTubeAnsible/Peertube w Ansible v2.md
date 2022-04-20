@@ -1,16 +1,22 @@
+# Aaron Andal
+
+# M08 - Serveis de Xarxa
+
 # Peertube w Ansible v2
 
-# 06.04.22 Nuevo
+# 06.04.22 - Nuevo
 
 
+
+# Procedimiento
 
 1. Abrir máquina virtual de Virt Manager
 
-2. Instalar ansible: sudo apt-get install ansible
+2. Instalar ansible: `sudo apt-get install ansible`
 
 3. Modificar: nano hosts --> Poner `peertube.edt`.
 
-4. Mkdir ansible-peertube.
+4. Mkdir `ansible-peertube`.
 
 5. nano hosts. --> `peertube.edt`.
 

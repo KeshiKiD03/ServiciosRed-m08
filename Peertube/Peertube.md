@@ -339,22 +339,3 @@ $ sudo cp /var/www/peertube/peertube-latest/support/sysctl.d/30-peertube-tcp.con
 $ sudo sysctl -p /etc/sysctl.d/30-peertube-tcp.conf
 ```
 
-3. 
-
-4. 
-
-5. 
-
-6. 
-
-7. 
-
-8. 
-
-9. 
-
-10. 
-
-11. 
-
-12. 

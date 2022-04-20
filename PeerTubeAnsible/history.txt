@@ -1,0 +1,283 @@
+   90  nano /etc/resolv.conf
+   91  host edt
+   92  host peertube
+   93  dig peertube
+   94  apt-get install dig
+   95  apt-get install iproute2
+   96  apt-geti nstall procps
+   97  apt-get install procps
+   98  dig 192.168.100.169
+   99  apt-get install dnsuitls
+  100  apt-get install bind-utils
+  101  apt-get install bind9-utils
+  102  apt-get update
+  103  nslookup peertube
+  104  dig peertube
+  105  ping 192.168.100.169
+  106  ls
+  107  ls -l
+  108  cd /var/www/peertube/
+  109  ls -l
+  110  cd ./peertube-latest && sudo -H -u peertube yarn install --production --pure-lockfile
+  111  nano /etc/resolv.conf 
+  112  service bind9 restart
+  113  service networking restart
+  114  ls -l
+  115  cd ..
+  116  ls -l
+  117  cd config
+  118  ls -l
+  119  cd ..
+  120  ls -l
+  121  cd ./peertube-latest && sudo -H -u peertube yarn install --production --pure-lockfile
+  122  nano /etc/resolv.conf 
+  123  apt-get update
+  124  host peertube
+  125  dig peertube
+  126  apt-cache search dig
+  127  apt-get install dnsutils
+  128  dig peertube
+  129  dig peertube
+  130  nano /etc/resolv.conf 
+  131  ip a
+  132  host edt
+  133  dig edt
+  134  dig ns.edt.
+  135  dig ns.edt.peertube
+  136  dig ns.edt.peertube.
+  137  dig peertube.
+  138  dig peertube
+  139  dig -t peertube
+  140  dig -t 192.168.100.141
+  141  dig 192.168.100.141
+  142  yarn -version
+  143  yarn --version
+  144  apt-get remove yarn
+  145  apt-get remove cmdtest
+  146  apt update
+  147  sudo apt install python-dev
+  148  sudo apt remove python-dev
+  149  sudo apt autoremove
+  150  sudo apt update
+  151  sudo apt install python3-dev python-is-python3
+  152  sudo apt update
+  153  sudo apt install certbot nginx ffmpeg postgresql postgresql-contrib openssl g++ make redis-server git cron wget
+  154  sudo systemctl start redis postgresql
+  155  systemctl start redis postgresql
+  156  npm install --global yarn
+  157  apt-get npm
+  158  apt-get install
+  159  apt-get install npm
+  160  npm install --global yarn
+  161  yarn --version
+  162  nodejs --verison
+  163  nodejs --version
+  164  curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
+  165  apt-get install -y nodejs
+  166  npm install --global yarn
+  167  cd ./peertube-latest && sudo -H -u peertube yarn install --production --pure-lockfile
+  168  cd ..
+  169  cd ./peertube-latest && sudo -H -u peertube yarn install --production --pure-lockfile
+  170  history
+  171  nodejs --version
+  172  cd ..
+  173  sudo -u peertube cp peertube-latest/config/default.yaml config/default.yaml
+  174  peertube cp peertube-latest/config/default.yaml config/default.yaml
+  175  cp peertube-latest/config/default.yaml config/default.yaml
+  176  cp peertube-latest/config/production.yaml.example config/production.yaml
+  177  nano config/production.yaml 
+  178  dig peertube.edt
+  179  cat config/pro
+  180  nano config/production.yaml 
+  181  service nginx status
+  182  nano /etc/nginx/sites-enabled/peertube
+  183  service nginx restart
+  184  journalctl -u nginx.service -f &
+  185  nano /etc/nginx/sites-enabled/peertube
+  186  service nginx restart
+  187  service nginx status
+  188  cp /var/www/peertube/peertube-latest/support/nginx/peertube /etc/nginx/sites-available/peertube
+  189  nano /etc/nginx/sites-enabled/peertube
+  190  nano /etc/nginx/sites-enabled/peertube
+  191  cat /var/www/peertube/peertube-latest/support/nginx/peertube 
+  192  rm /etc/nginx/sites-enabled/peertube
+  193  cp /var/www/peertube/peertube-latest/support/nginx/peertube /etc/nginx/sites-available/peertube
+  194  cat /etc/nginx/sites-available/peertube 
+  195  nano /etc/nginx/sites-available/peertube 
+  196  sudo sed -i 's/${WEBSERVER_HOST}/peertube.edt/g' /etc/nginx/sites-available/peertube
+  197  sed -i 's/${WEBSERVER_HOST}/peertube.edt/g' /etc/nginx/sites-available/peertube
+  198  sed -i 's/${PEERTUBE_HOST}/127.0.0.1:9000/g' /etc/nginx/sites-available/peertube
+  199  vim /etc/nginx/sites-available/peertube 
+  200  vim /etc/nginx/sites-available/peertube 
+  201  vim /etc/nginx/sites-available/peertube 
+  202  ln -s /etc/nginx/sites-available/peertube /etc/nginx/sites-enabled/peertube
+  203  systemctl stop nginx
+  204  certbot certonly --standalone --post-hook "systemctl restart nginx"
+  205  certbot certonly --register-unsafely-without-email --standalone --post-hook "systemctl restart nginx"
+  206  vim /etc/nginx/sites-available/peertube 
+  207  systemctl reload nginx
+  208  systemctl start nginx
+  209  systemctl status nginx
+  210  nano /etc/nginx/sites-available/peertube 
+  211  systemctl stop nginx
+  212  certbot certonly --standalone --post-hook "systemctl restart nginx"
+  213  certbot certonly --standalone --post-hook "systemctl restart nginx"
+  214  systemctl stop nginx
+  215  cp /var/www/peertube/peertube-latest/support/nginx/peertube /etc/nginx/sites-available/peertube
+  216  nano config/production.yaml 
+  217  sed -i 's/${WEBSERVER_HOST}/peertube.edt/g' /etc/nginx/sites-available/peertube
+  218  sed -i 's/${PEERTUBE_HOST}/127.0.0.1:9000/g' /etc/nginx/sites-available/peertube
+  219  ln -s /etc/nginx/sites-available/peertube /etc/nginx/sites-enabled/peertube
+  220  systemctl restart nginx
+  221  cat /etc/nginx/sites-enabled/peertube 
+  222  rm /etc/nginx/sites-enabled/peertube 
+  223  rm /etc/nginx/sites-available/peertube 
+  224  systemctl restart nginx
+  225  cp /var/www/peertube/peertube-latest/support/nginx/peertube /etc/nginx/sites-available/peertube
+  226  sed -i 's/${WEBSERVER_HOST}/peertube.edt/g' /etc/nginx/sites-available/peertube
+  227  sed -i 's/${PEERTUBE_HOST}/127.0.0.1:9000/g' /etc/nginx/sites-available/peertube
+  228  ln -s /etc/nginx/sites-available/peertube /etc/nginx/sites-enabled/peertube
+  229  systemctl restart nginx
+  230  vim /etc/nginx/sites-available/peertube 
+  231  nano /etc/nginx/sites-available/peertube 
+  232  nano /etc/nginx/sites-available/peertube 
+  233  journalctl -u nginx.service -f
+  234  nano /etc/nginx/sites-available/peertube 
+  235  systemctl stop nginx
+  236  systemctl start nginx
+  237  ln -s /etc/nginx/sites-available/peertube /etc/nginx/sites-enabled/peertube
+  238  rm /etc/nginx/sites-enabled/peertube 
+  239  ln -s /etc/nginx/sites-available/peertube /etc/nginx/sites-enabled/peertube
+  240  systemctl stop nginx
+  241  certbot certonly --standalone --post-hook "systemctl restart nginx"
+  242  rm /etc/nginx/sites-enabled/peertube 
+  243  cp /var/www/peertube/peertube-latest/support/nginx/peertube /etc/nginx/sites-available/peertube
+  244  nano /etc/nginx/sites-available/peertube 
+  245  rm /etc/nginx/sites-available/peertube 
+  246  nano /etc/nginx/sites-available/peertube
+  247  sed -i 's/${WEBSERVER_HOST}/peertube.edt/g' /etc/nginx/sites-available/peertube
+  248  sed -i 's/${PEERTUBE_HOST}/127.0.0.1:9000/g' /etc/nginx/sites-available/peertube
+  249  ln -s /etc/nginx/sites-available/peertube /etc/nginx/sites-enabled/peertube
+  250  systemctl stop nginx
+  251  journalctl -u nginx.service -f &
+  252  apt-get remove ngninx
+  253  apt-get remove nginx
+  254  apt-get update
+  255  apt-geti install nginx
+  256  apt-get install nginx
+  257  systemctl status nginx
+  258  cat /etc/nginx/nginx.conf q
+  259  systemctl start nginx
+  260  systemctl reload nginx
+  261  ls -l
+  262  rm /etc/nginx/sites-available/peertube 
+  263  rm /etc/nginx/sites-available/peertube
+  264  rm /etc/nginx/sites-enabled/peertube
+  265  ls -l
+  266  ls -l
+  267  ls -l
+  268  systemctl restart nginx
+  269  cp /var/www/peertube/peertube-latest/support/nginx/peertube /etc/nginx/sites-available/peertube
+  270  sed -i 's/${WEBSERVER_HOST}/.edt/g' /etc/nginx/sites-available/peertube
+  271  sed -i 's/${PEERTUBE_HOST}/127.0.0.1:9000/g' /etc/nginx/sites-available/peertube
+  272  rm /etc/nginx/sites-available/peertube
+  273  cp /var/www/peertube/peertube-latest/support/nginx/peertube /etc/nginx/sites-available/peertube
+  274  nano /etc/nginx/sites-available/peertube
+  275  sed -i 's/${WEBSERVER_HOST}/.edt/g' /etc/nginx/sites-available/peertube
+  276  sed -i 's/${PEERTUBE_HOST}/127.0.0.1:9000/g' /etc/nginx/sites-available/peertube
+  277  vim /etc/nginx/sites-available/peertube 
+  278  ln -s /etc/nginx/sites-available/peertube /etc/nginx/sites-enabled/peertube
+  279  systemctl stop nginx
+  280  certbot certonly --standalone --post-hook "systemctl restart nginx"
+  281  certbot certonly --standalone --post-hook "systemctl restart nginx"
+  282  certbot certonly --standalone --post-hook "systemctl restart nginx"
+  283  certbot certonly --standalone --post-hook "systemctl restart nginx"
+  284  rm /var/www/peertube/peertube-latest/support/nginx/peertube /etc/nginx/sites-available/peertube
+  285  rm /etc/nginx/sites-enabled/peertube 
+  286  cp /var/www/peertube/peertube-latest/support/nginx/peertube /etc/nginx/sites-available/peertube
+  287  cp /var/www/peertube/peertube-latest/support/nginx/peertube /etc/nginx/sites-available/peertube
+  288  ls -l
+  289  rm /etc/nginx/sites-available/peertube
+  290  rm /etc/nginx/sites-enabled/peertube
+  291  sudo cp /var/www/peertube/peertube-latest/support/nginx/peertube /etc/nginx/sites-available/peertube
+  292  cp /var/www/peertube/peertube-latest/support/nginx/peertube /etc/nginx/sites-available/peertube
+  293  ls -l
+  294  cd peertube-latest
+  295  ls -l
+  296  cd ..
+  297  ls -l
+  298  cd ..
+  299  ls -l
+  300  cd peertube/
+  301  ls -l
+  302  cd peertube-latest
+  303  ls -l
+  304  cd support/
+  305  ls -l
+  306  cd nginx/
+  307  ls -l
+  308  nano peertube
+  309  cd /etc/nginx/sites-available/
+  310  ls -l
+  311  nano peertube
+  312  ln -s /etc/nginx/sites-available/peertube /etc/nginx/sites-enabled/peertube
+  313  cd /var/tmp/
+  314  wget -q "https://github.com/Chocobozzz/PeerTube/releases/download/${VERSION}/peertube-${VERSION}.zip"
+  315  unzip -q peertube-${VERSION}.zip && sudo -u peertube rm peertube-${VERSION}.zip
+  316  ls -l
+  317  ls -l
+  318  mkdir prueba
+  319  cd prueba/
+  320  wget -q "https://github.com/Chocobozzz/PeerTube/releases/download/${VERSION}/peertube-${VERSION}.zip"
+  321  ls -l
+  322  cd $HOME
+  323  ls -l
+  324  mkdir prueba
+  325  cd prueba/
+  326  wget -q "https://github.com/Chocobozzz/PeerTube/releases/download/${VERSION}/peertube-${VERSION}.zip"
+  327  ls -l
+  328  cd /var/www/peertube/peertube-latest/support/nginx
+  329  nano peertube
+  330  cd ..
+  331  ls -l
+  332  cp /var/www/peertube/peertube-latest/support/nginx/peertube /etc/nginx/sites-available/peertube
+  333  cd /etc/nginx/sites-available/
+  334  nano peertube 
+  335  sed -i 's/${WEBSERVER_HOST}/peertube.edt/g' /etc/nginx/sites-available/peertube
+  336  sed -i 's/${PEERTUBE_HOST}/127.0.0.1:9000/g' /etc/nginx/sites-available/peertube
+  337  nano peertube 
+  338  $ sudo ln -s /etc/nginx/sites-available/peertube /etc/nginx/sites-enabled/peertube
+  339  ln -s /etc/nginx/sites-available/peertube /etc/nginx/sites-enabled/peertube
+  340  rm /etc/nginx/sites-enabled/peertube 
+  341  ln -s /etc/nginx/sites-available/peertube /etc/nginx/sites-enabled/peertube
+  342  systemctl reload nginx
+  343  systemctl restart nginx
+  344  nano peertube 
+  345  vim peertube 
+  346  systemctl restart nginx
+  347  vim peertube 
+  348  mv peertube $HOME
+  349  ls -l
+  350  nano peertube
+  351  systemctl restart nginx
+  352  rm /etc/nginx/sites-enabled/peertube 
+  353  ln -s /etc/nginx/sites-available/peertube /etc/nginx/sites-enabled/peertube
+  354  systemctl restart nginx
+  355  nano peertube 
+  356  rm /etc/nginx/sites-enabled/peertube 
+  357  ln -s /etc/nginx/sites-available/peertube /etc/nginx/sites-enabled/peertube
+  358  systemctl restart nginx
+  359  cat peertube 
+  360  systemctl reload nginx
+  361  cp /var/www/peertube/peertube-latest/support/sysctl.d/30-peertube-tcp.conf /etc/sysctl.d/
+  362  sysctl -p /etc/sysctl.d/30-peertube-tcp.conf
+  363  $ sudo cp /var/www/peertube/peertube-latest/support/systemd/peertube.service /etc/systemd/system/
+  364  cp /var/www/peertube/peertube-latest/support/systemd/peertube.service /etc/systemd/system/
+  365  vim /etc/systemd/system/peertube.service
+  366  systemctl daemon-reload
+  367  systemctl enable peertube
+  368  systemctl start peertube
+  369  journalctl -feu peertube
+  370  service peertube start
+  371  exit
+  372  history
