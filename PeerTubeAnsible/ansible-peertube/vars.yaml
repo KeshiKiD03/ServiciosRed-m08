@@ -1,0 +1,5 @@
+port: 80
+domain: mysuperdomain.com
+root_directory: /var/www/html/mysuperdomain
+
+

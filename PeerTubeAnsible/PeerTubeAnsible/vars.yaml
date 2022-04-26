@@ -1,0 +1,10 @@
+port: 80
+domain: mysuperdomain.edt
+root_directory: /var/www/html/mysuperdomain
+peertube_ver: 3.0
+VERSION: v4.1.1
+hostname: 'peertube.edt'
+https: false
+WESERVER_HOST: peertube.edt
+PEERTUBE_HOST: 127.0.0.1:900:9000  
+

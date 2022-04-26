@@ -1,0 +1,201 @@
+---
+- hosts: all           #per a tots els hosts que apareguin al fitxer
+  remote_user: root    #executarà tot com a usuari root
+  vars_files: 
+    - vars.yaml        #si tenim fitxers j2, extrauen les variables d'aqui
+  tasks:
+  - name: Install the gpg key for nodejs LTS #EXECUTA UN SCRIPT ONLINE
+    shell: curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash - #setup-14.x es un script que descarrega la clau GPG i la guarda al clauer de root i afegeix el repositori
+  
+  - name: Install Packages
+    apt:
+      name: "{{ item }}"     #per cada element de loop
+      state: present
+    loop:
+      - vim 
+      - git
+      - curl
+      - sudo
+      - unzip
+      - certbot
+      - python3-dev
+      - python-is-python3
+      - nginx 
+      - ffmpeg
+      - postgresql 
+      - postgresql-contrib
+      - openssl
+      - g++ 
+      - make
+      - redis-server #es com un Mongo que funciona a la mem caché
+      - cron 
+      - wget
+      - nodejs        #com fem pq no pregunti a la instal·lació ? 
+      - python3-psycopg2 # paquet necesari per utilizar moduls/ext postgres SQL
+
+  - name: install yarn      #gestor de dependencies javascript
+    #shell: npm install --global yarn   #npm es un gestor de moduls de node, instalem yarn amb npm
+    npm: 
+      name: yarn
+      global: yes
+      state: present  
+
+  - name: Create NGINX config file
+    template:        #utilitza el módul template (traspassar conf amb variables)
+      src: nginx.conf.j2     #apartir del contingut del tag server subsituteix pel del fitxer
+      dest: /etc/nginx/sites-enabled/default
+  
+  - name: Create user        
+    user:                 #modul creacio usuari
+      name: peertube 
+      create_home: yes  
+      home: /var/www/peertube
+      shell: /bin/bash
+      state: present
+      #password: peertube
+      password: "{{ 'peertube' | password_hash('sha512') }}"
+  
+  - name: Start service redis postgresql
+    service:
+      name: "{{ item }}"    #la var item es cada element del loop
+      state: started     #fes start al serveis citats
+    loop:
+      - redis
+      - postgresql
+  
+  - name: Crear l'usuari, peertube a postgres amb MD5-hashed password, i donem privilegis
+    become: yes
+    become_user: postgres
+    postgresql_user:
+      name: peertube
+      db: postgres
+      password: md5929816762d16dcccba21db3f591a3e17
+      role_attr_flags: CREATEDB,NOSUPERUSER
+  
+  - name: Crear base de dades
+    ignore_errors: yes
+    shell: sudo -u postgres createdb -O peertube -E UTF8 -T template0 peertube_prod
+      #  - name: Instalar extensions necesaries
+      #    shell: sudo -u postgres psql -c "CREATE EXTENSION pg_trgm;" peertube_prod;sudo -u postgres psql -c "CREATE EXTENSION unaccent;" peertube_prod
+  
+      # Instal·lar extensions postgres per a ansible (AIXO HO HEM DE FER EN LOCAL!!)
+      # ansible-galaxy collection install community.postgresql
+  
+  - name: Crear directoris necesaris per al peertube
+    shell: sudo -u peertube mkdir -p /var/www/peertube/config /var/www/peertube/storage /var/www/peertube/versions
+  
+  - name: Cambiar permisos del directori config
+    shell: sudo -u peertube chmod 750 /var/www/peertube/config
+
+# DESCARREGAR PEERTUBE, DESCOMPRIMIR i ELIMINAR EL ZIP
+
+      #  - name: Obtenir versio peertube
+      #shell: VERSION=$(curl -s https://api.github.com/repos/chocobozzz/peertube/releases/latest | grep tag_name | cut -d '"' -f 4)
+
+  - name: Descarregar peertube comprimit
+    shell: sudo -u peertube wget -q "https://github.com/Chocobozzz/PeerTube/releases/download/{{ VERSION }}/peertube-{{ VERSION }}.zip"   
+    ignore_errors: yes # OJO PELIGRO
+    args:
+      chdir: /var/www/peertube/versions
+
+  - name: Descomprimir i borrar zip(borrar cada vegada, sino es penja)
+    shell: sudo -u peertube unzip -q peertube-{{ VERSION }}.zip && sudo -u peertube rm peertube-{{ VERSION }}.zip
+    args:
+      chdir: /var/www/peertube/versions
+
+# INSTAL·LAR PEERTUBE ######################
+
+  - name: Instal·lar peertube (crear un simbolik link)
+    ansible.builtin.file:
+     src: /var/www/peertube/versions/peertube-{{ VERSION }}
+     dest: /var/www/peertube/peertube-latest
+     mode: '0750'
+     state: link  #vol dir que es un soft-link, sino seria "hard"
+       #become: true
+       #become_user: peertube
+       #chdir: /var/www/peertube  #no se si funciona, sino posem rutes abs
+
+       #  - name: Instal·lar col·lecció requerida per Ansible 
+       #shell: ansible-galaxy collection install community.general 
+
+  - name: Instal·lar yarn
+    shell: sudo -H -u peertube yarn install --production
+    args: 
+      chdir: /var/www/peertube/peertube-latest
+
+      #-  name: Instal·lar de peertube amb yarn 2/2
+      #yarn:             #cal instal·lar la colecio commmunity.general per executar el modul yarn
+      #name: peertube
+      #production: yes #crec
+      #version: '{{ VERSION }}' 
+      #path: /var/www/peertube/peertube-latest
+
+# CONFIGURAR PERTUBE ########################
+  
+  - name: Copiar configuració per defecte de Peertube client
+    ansible.builtin.copy:
+     src: /var/www/peertube/peertube-latest/config/default.yaml
+     dest: /var/www/peertube/config/default.yaml
+     owner: peertube
+     group: peertube
+     remote_src: yes   # sino no xuta
+
+  - name: Copiar plantilla de config d'exemple al Peertube client
+    ansible.builtin.copy:
+     src: /var/www/peertube/peertube-latest/config/production.yaml.example
+     dest: /var/www/peertube/config/production.yaml
+     owner: peertube
+     group: peertube
+     remote_src: yes   # sino no xuta 
+
+  - name: Modificar la plantilla de config d'exemple amb les nostres variables
+    ansible.builtin.template:        #traspassar variables a la config
+      src: peertube.conf.yaml.j2     #apartir del contingut del tag server subsituteix pel del fitxer
+      dest: /var/www/peertube/config/production.yaml
+
+# SERVIDOR WEB ##################################
+
+  - name: Copiar plantilla config per defecte del peertube per al servidor Nginx
+    copy:
+      src: /var/www/peertube/peertube-latest/support/nginx/peertube
+      dest: /etc/nginx/sites-available/peertube
+       #owner: peertube
+       #group: peertube
+      remote_src: yes 
+
+  - name: Modificar la plantilla de config de peertube al SERVIDOR nginx
+    ansible.builtin.template:        #traspassar variables a la config
+      src: nginx_conf_peertube_pag19.j2     #apartir del contingut del tag server subsituteix pel del fitxer
+      dest: /etc/nginx/sites-available/peertube
+
+        # - name: Establir el [peertube-domain] (peertube.edt) al fitxer de configuració 
+        #ansible.builtin.template:
+      # src: nginx_site.j2
+      #dest: /etc/nginx/sites-available/peertube
+
+  - name: Activar el lloc de peertube
+    ansible.builtin.file:
+      src: /etc/nginx/sites-available/peertube
+      dest: /etc/nginx/sites-enabled/peertube
+      state: link  #vol dir que es un soft, sino seria "hard"
+ 
+  - name: Reinciar NGINX (AQUI PETA)
+    ansible.builtin.service:
+      name: nginx
+      state: restarted
+
+  - name: Copiar la plantilla de configuració del servei de peertube per a systemd
+    ansible.builtin.copy:
+     src: /var/www/peertube/peertube-latest/support/systemd/peertube.service
+     dest: /etc/systemd/system/
+     remote_src: yes   #o si ?
+
+  - name: Recargar tots els dimonis de systemctl
+    ansible.builtin.service:
+      name: systemd          #??????????
+      state: reloaded
+
+  - name: Inciar servei Peertube
+    ansible.builtin.service:
+      name: peertube 
+      state: yes

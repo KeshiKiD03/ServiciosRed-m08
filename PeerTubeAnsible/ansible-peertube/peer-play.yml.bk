@@ -66,8 +66,6 @@
     loop:
       - redis
       - postgresql
-      - nginx
-      -
 
 
   - name: Create user
@@ -114,64 +112,5 @@
       src: https://github.com/Chocobozzz/PeerTube/releases/download/v4.1.1/peertube-v4.1.1.zip
       dest: /var/www/peertube/versions/
       remote_src: yes
-  - name: Create a symbolic link
-    ansible.builtin.file:
-      src: /var/www/peertube/versions/peertube-v4.1.1
-      dest: /var/www/peertube/peertube-lastest
-      owner: peertube
-      group: peertube
-      state: link
-  - name: Install "peertube" node.js package.
-    become: yes
-    become_user: peertube
-    community.general.yarn:
-      name: peertube
-      path: /var/www/peertube/peertube-lastest
-      production: yes
-  - name: Copy file with owner and permissions
-    ansible.builtin.copy:
-      src: /var/www/peertube/peertube-lastest/config/default.yaml
-      dest: /var/www/peertube/config/
-      remote_src: yes
-      owner: peertube
-      group: peertube
-      mode: '0644'
-  - name: Copy file with owner and permissions
-    ansible.builtin.copy:
-      src: /var/tmp/M08/ansible-peertube/production.yaml
-      dest: /var/www/peertube/config/
-      owner: peertube
-      group: peertube
-      mode: '0644'
-  - name: Copy file with owner and permissions
-    ansible.builtin.copy:
-      src: /var/tmp/M08/ansible-peertube/peertube
-      dest: /etc/nginx/sites-available/peertube
-      owner: peertube
-      group: peertube
-      mode: '0644'
-  - name: Create a symbolic link
-    ansible.builtin.file:
-      src: /etc/nginx/sites-available/peertube
-      dest: /etc/nginx/sites-enabled/peertube
-      owner: peertube
-      group: peertube
-      state: link
-  - name: Copy file with owner and permissions
-    ansible.builtin.copy:
-      src: /var/www/peertube/peertube-latest/support/systemd/peertube.service
-      dest: /etc/systemd/system/
-      remote_src: yes
-      owner: peertube
-      group: peertube
-      mode: '0644'
-  - name: Start service redis postgresql
-    service:
-      name: "{{ item }}"
-      state: start
-    loop:
-      - redis
-      - postgresql
-      - nginx
-      - peertube
+        
 
