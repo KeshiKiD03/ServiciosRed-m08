@@ -1,47 +1,56 @@
+# Peertube YAML - Ansible - Aaron
 ---
-- hosts: all
-  remote_user: root
+- name: Install Peertube
+- hosts: all # S'executara per a tots els hosts que apareguin en aquest fitxer
+  remote_user: root # Execute w Root
   vars_files:
-    - vars.yaml
+    - vars.yaml # S'extrauràn les variables d'aquí
   tasks:
-  - name: Install the gpg key for nodejs LTS
+  - name: Install the gpg key for nodejs LTS # Executarà un script Online
     shell: curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+# setup-14.x es un script que descarrega una clau GPG i la guarda al clauer del Root i ho afegeix al repo
   - name: Install Packages
     apt:
-      name: "{{ item }}"
+      name: "{{ item }}" # Itera per a cada element de loop, i en la variable item es canviarà per a cada iteració
       state: present
     loop:
-      - vim 
-      - git
-      - curl
       - sudo
+      - git
+      - vim
+      - nginx
+      - curl
       - unzip
       - certbot
       - python3-dev
       - python-is-python3
-      - nginx 
       - ffmpeg
       - postgresql 
       - postgresql-contrib
+      - redis-server
       - openssl
+      - cron 
       - g++ 
       - make
-      - redis-server
-      - cron 
       - wget
       - nodejs 
       - python3-psycopg2
-  - name: install yarn
-    shell: npm install --global yarn
-  - name: Create NGINX config file
+  - name: Install Yarn # Gestor de dependencias de Javascript
+    shell: npm install --global yarn # NPM es un gestor de módulos de node, se instala YARN con NPM
+
+# Modul NGIX Config file
+  - name: Create NGINX Config File
     template:
       src: nginx.conf.j2
       dest: /etc/nginx/sites-enabled/default
+
+# Modul create USER con el directorio actual
   - name: Create user
     user:
       name: mysuperuser
       home: "{{ root_directory }}"
-  - name: Copy html file
+
+# Copiar el fichero HTML que hay en el directorio actual
+  - name: Copy of the HTML File
     become: true
     become_user: mysuperuser
     copy:
@@ -50,27 +59,29 @@
     loop:
       - index.html
       - other.html
-  - name: Add the user 'peertube'
+
+# Añadir el usuario peertube
+  - name: Adding the 'peertube' user
     ansible.builtin.user:
       name: peertube
       shell: /bin/bash
       home: /var/www/peertube
+      state: present
       comment: lo peertube
-      password: peertube
+      password: "{{ 'peertube' | password_hash('sha512') }}"
 
-
-  - name: Start service redis postgresql
+# Iniciar el servicio Redis PostgreSQL
+  - name: Start Redis Postgresql Service
     service:
       name: "{{ item }}"
       state: started
     loop:
       - redis
       - postgresql
-      - nginx
-      -
 
-
-  - name: Create user
+   
+# Crear el USUARIO 'Peertube' a postgresql y con privilegios de SUPERUSER
+  - name: Create user Postgresql
     become: yes
     become_user: postgres
     community.postgresql.postgresql_user:
@@ -78,26 +89,29 @@
       password: pertube
       role_attr_flags: CREATEDB,SUPERUSER
 
-
-  - name: Create db 
+# Crear la BD 'peertube_bd'
+  - name: Create Database
     become: yes
     become_user: postgres
     community.postgresql.postgresql_db:
-      name: peertube_prod
+      name: peertube_bd
       encoding: UTF-8
       template: template0
       owner: peertube
 
-  - name: extensiones one
+# Crear extensions necesaries per a postgres_db
+  - name: Extension One
     become: yes
     become_user: postgres
     community.postgresql.postgresql_ext:
       name: "{{ item }}" 
-      db: peertube_prod
+      db: peertube_bd
     loop:
       - pg_trgm
       - unaccent
-  - name: Create a directory if it does not exist
+
+# Creará el directorio para Peertube en /var/www/peertube/{nombre del ITEM} si no existe
+  - name: Crear el directorio si no existe
     ansible.builtin.file:
       path: '/var/www/peertube/{{ item }}'
       owner: peertube
@@ -107,28 +121,36 @@
       - config
       - storage
       - versions
-  - name: extract
+
+# Descargarse el peertube "https://github.com/Chocobozzz/PeerTube/releases/download/v4.1.1/peertube-v4.1.1.zip"
+  - name: Extracción de la zip de Peertube
     become: yes
     become_user: peertube
     ansible.builtin.unarchive:
       src: https://github.com/Chocobozzz/PeerTube/releases/download/v4.1.1/peertube-v4.1.1.zip
       dest: /var/www/peertube/versions/
       remote_src: yes
-  - name: Create a symbolic link
+
+# Crear enlace simbólico de la versión de Peertube v4.1.1 a la última versión de Peertube del archivo que nos hemos descargado
+  - name: Crear un enlace simbólico de la versión v4.1.1 a la última versión
     ansible.builtin.file:
       src: /var/www/peertube/versions/peertube-v4.1.1
       dest: /var/www/peertube/peertube-lastest
       owner: peertube
       group: peertube
       state: link
-  - name: Install "peertube" node.js package.
+
+# Instalar Peertube nodejs Package
+  - name: Install 'peertube' NODE.JS package.
     become: yes
     become_user: peertube
     community.general.yarn:
       name: peertube
       path: /var/www/peertube/peertube-lastest
       production: yes
-  - name: Copy file with owner and permissions
+
+# Copiar el DEFAULT.YAML y sus permisos adherentes.
+  - name: Copiar el fichero default.yaml con permisos adherentes
     ansible.builtin.copy:
       src: /var/www/peertube/peertube-lastest/config/default.yaml
       dest: /var/www/peertube/config/
@@ -136,28 +158,36 @@
       owner: peertube
       group: peertube
       mode: '0644'
-  - name: Copy file with owner and permissions
+
+# Copiar el fichero PRODUCTION.YAML y sus permisos adherentes
+  - name: Copiar el fichero production.yaml con permisos adherentes
     ansible.builtin.copy:
       src: /var/tmp/M08/ansible-peertube/production.yaml
       dest: /var/www/peertube/config/
       owner: peertube
       group: peertube
       mode: '0644'
-  - name: Copy file with owner and permissions
+
+# Copiar el fichero peertube en la carpeta insitu con permisos aherentes a la carpeta de /etc/nginx/sites-available
+  - name: Copiar la carpeta peertube en la carpeta insitu con permisos adherentes
     ansible.builtin.copy:
-      src: /var/tmp/M08/ansible-peertube/peertube
+      src: /media/sf_ASIX/ASIX_2K21/Documents/m08/PeerTubeAnsible/ansible-peertube/ansible-peertube/peertube
       dest: /etc/nginx/sites-available/peertube
       owner: peertube
       group: peertube
       mode: '0644'
-  - name: Create a symbolic link
+
+# Crear un enlace simbólico de peertube a nginx
+  - name: Crear un enlace simbólico del fichero de Peertube a Nginx
     ansible.builtin.file:
       src: /etc/nginx/sites-available/peertube
       dest: /etc/nginx/sites-enabled/peertube
       owner: peertube
       group: peertube
       state: link
-  - name: Copy file with owner and permissions
+
+# Copiar el servicio peertube.service a /etc/system/system
+  - name: Generación de Peertube service a SystemD
     ansible.builtin.copy:
       src: /var/www/peertube/peertube-latest/support/systemd/peertube.service
       dest: /etc/systemd/system/
@@ -165,6 +195,8 @@
       owner: peertube
       group: peertube
       mode: '0644'
+
+# Iniciar en modo loop los servicios para Redis Postgresql      
   - name: Start service redis postgresql
     service:
       name: "{{ item }}"
@@ -174,4 +206,3 @@
       - postgresql
       - nginx
       - peertube
-

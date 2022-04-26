@@ -80,6 +80,8 @@ ansible -i hosts -m apt -a "name=vim state=present" (Como ROOT)
 
 ```
 
+
+
 15. Ejecutar el Playbook.
 
 ```
